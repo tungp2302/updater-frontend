@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
             Authorization: `Bearer ${RESEND_KEY}`,
           },
           body: JSON.stringify({
-            from: "noreply@torq-lab.com",
+            from: "TORQ Contact <noreply@torq-lab.com>",
             to: dest,
             subject: `New contact form submission from ${name ?? "Anonymous"}`,
             html: `
