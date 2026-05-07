@@ -19,12 +19,8 @@ export async function createSignedUpdaterUrl(): Promise<string> {
   const bucket = requiredEnv("UPDATER_ZIP_BUCKET");
   const objectPath = requiredEnv("UPDATER_ZIP_OBJECT_PATH");
   const expiresInSeconds = Number(process.env.UPDATER_ZIP_SIGNED_URL_TTL_SECONDS || 300);
-  const safePath = objectPath
-    .split("/")
-    .map((part) => encodeURIComponent(part))
-    .join("/");
 
-  const response = await fetch(`${supabaseUrl}/storage/v1/object/sign/${bucket}/${safePath}`, {
+  const response = await fetch(`${supabaseUrl}/storage/v1/object/sign/${bucket}/${objectPath}`, {
     method: "POST",
     headers: {
       apikey: serviceRoleKey,
