@@ -59,8 +59,8 @@ export async function POST(request: Request) {
     const normalizedEmail = normalizeEmail(email);
     // Find account by email
     const accountRows = await supabaseSelect<any[]>("accounts", new URLSearchParams({
-      select: "id,email",
-      email: `eq.${normalizedEmail}`,
+      select: "id",
+      email_norm: `eq.${normalizedEmail}`,
     }));
 
     const account = Array.isArray(accountRows) && accountRows.length ? accountRows[0] : null;
