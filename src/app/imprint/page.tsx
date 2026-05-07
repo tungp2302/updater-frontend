@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Imprint() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const leftNav = ["ABOUT US", "CONTACT"];
 
   return (
@@ -12,12 +14,37 @@ export default function Imprint() {
 
       <div className="relative mx-auto flex min-h-screen max-w-[1280px] flex-col px-4 pt-4 pb-12 sm:px-6 lg:px-8">
         <div className="rounded-none bg-[#0e24d6] px-4 py-1.5 text-center text-xs font-semibold tracking-[0.02em] text-white sm:text-sm">
-          Save over 40% compared to Soul Dial
+          Everything you need for Commander nights
         </div>
 
         {/* Header */}
-        <header className="flex items-center justify-between gap-4 bg-white px-2 py-5 sm:px-4">
-          <nav className="hidden items-center gap-8 text-sm font-medium uppercase tracking-[0.14em] text-[#1434d6] md:flex">
+        <header className="flex items-center justify-between gap-2 bg-white px-3 py-3 sm:px-4 sm:py-4">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 text-[#1f232b] md:hidden"
+            aria-label="Toggle menu"
+          >
+            <div className="h-0.5 w-6 bg-current" />
+            <div className="h-0.5 w-6 bg-current" />
+            <div className="h-0.5 w-6 bg-current" />
+          </button>
+
+          <div className="flex flex-1 justify-center md:absolute md:left-1/2 md:-translate-x-1/2">
+            <Link href="/">
+              <Image
+                src="/torq/logo-clear-bg.png"
+                alt="TORQ"
+                width={656}
+                height={236}
+                className="h-16 w-auto sm:h-20 md:h-[126px]"
+                loading="eager"
+                priority
+              />
+            </Link>
+          </div>
+
+          <nav className="hidden items-center gap-6 text-xs font-medium uppercase tracking-[0.14em] text-[#1434d6] sm:gap-8 sm:text-sm md:flex">
             {leftNav.map((item) => (
               <a
                 key={item}
@@ -29,24 +56,34 @@ export default function Imprint() {
             ))}
           </nav>
 
-          <div className="flex flex-1 justify-center md:absolute md:left-1/2 md:-translate-x-1/2 md:justify-center">
-            <Link href="/">
-              <Image
-                src="/torq/logo-clear-bg.png"
-                alt="TORQ"
-                width={656}
-                height={236}
-                className="h-28 w-auto sm:h-[126px]"
-              />
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              href="/account"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#1f232b] text-[#1f232b] transition hover:border-[#1434d6] hover:text-[#1434d6] sm:h-10 sm:w-10 sm:text-lg"
+              aria-label="Open account dashboard"
+            >
+              <span className="text-sm leading-none sm:text-lg">⌂</span>
             </Link>
           </div>
-
-          <div className="flex items-center gap-4 sm:gap-8">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#1f232b] text-[#1f232b]">
-              <span className="text-lg leading-none">◻</span>
-            </div>
-          </div>
         </header>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="bg-white px-3 py-3 md:hidden">
+            <nav className="flex flex-col gap-3">
+              {leftNav.map((item) => (
+                <a
+                  key={item}
+                  href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : "#"}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-sm font-medium uppercase tracking-[0.12em] text-[#1434d6] transition hover:text-[#091aa0]"
+                >
+                  {item}
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
 
         {/* Content */}
         {/* Content */}

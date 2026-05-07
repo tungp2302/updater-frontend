@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "TORQ",
-  description: "Animated storefront for a one-time software purchase.",
+  description: "Everything you need for Commander nights — a one-time software purchase.",
 };
 
 export default function RootLayout({

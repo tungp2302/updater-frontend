@@ -140,28 +140,35 @@ export default function AccountPage() {
             </p>
           </div>
 
-          <div className="mt-6 rounded-[1.25rem] border border-[#e2e5eb] bg-[#fbfbfc] p-4 sm:p-5">
+            <div className="mt-6 rounded-[1.25rem] border border-[#e2e5eb] bg-[#fbfbfc] p-4 sm:p-5">
             <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7483]" htmlFor="account-email">
               Email address
             </label>
-            <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-              <input
-                id="account-email"
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
-                className="h-11 flex-1 rounded-xl border border-[#d6dbe3] bg-white px-4 text-sm text-[#1f232b] outline-none focus:border-[#1434d6]"
-              />
-              <button
-                type="button"
-                onClick={lookupStatus}
-                disabled={loading}
-                className="h-11 rounded-xl bg-[#1434d6] px-5 text-sm font-semibold text-white transition hover:bg-[#0f2cbd] disabled:opacity-70"
-              >
-                {loading ? "Looking up..." : "Check status"}
-              </button>
-            </div>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await lookupStatus();
+              }}
+            >
+              <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+                <input
+                  id="account-email"
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  className="h-11 flex-1 rounded-xl border border-[#d6dbe3] bg-white px-4 text-sm text-[#1f232b] outline-none focus:border-[#1434d6]"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="h-11 rounded-xl bg-[#1434d6] px-5 text-sm font-semibold text-white transition hover:bg-[#0f2cbd] disabled:opacity-70"
+                >
+                  {loading ? "Looking up..." : "Check status"}
+                </button>
+              </div>
+            </form>
 
             {error ? <p className="mt-3 text-sm font-medium text-[#a2362d]">{error}</p> : null}
             {status ? <p className="mt-3 text-sm font-medium text-[#1f5a2f]">{status.message}</p> : null}
@@ -269,6 +276,14 @@ export default function AccountPage() {
               </Link>
               <a href="mailto:support@torq-lab.com" className="text-[#1434d6] underline">
                 support@torq-lab.com
+              </a>
+              <a
+                href="https://www.instagram.com/torqlab.mtg/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#1434d6] underline"
+              >
+                Instagram
               </a>
             </div>
             <p className="mt-4 text-xs font-medium text-[#667086]">

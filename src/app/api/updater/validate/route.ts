@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { LICENSE_MAX_DEVICES } from "@/lib/server/env";
-import { supabaseRpc } from "@/lib/server/supabase";
+import { supabaseSelect, supabaseUpdate, supabaseInsert } from "@/lib/server/supabase";
 
 type ValidateAccessRow = {
   account_id: string | null;
@@ -57,46 +57,80 @@ export async function POST(request: Request) {
     }
 
     const normalizedEmail = normalizeEmail(email);
-    const resultRows = await supabaseRpc<ValidateAccessRow[]>("validate_updater_access", {
-      p_account_email: normalizedEmail,
-      p_device_id: deviceId,
-      p_app_version: null,
-      p_request_ip: getClientIp(request),
-      p_user_agent: request.headers.get("user-agent"),
-    });
-    const result = resultRows[0];
+    // Find account by email
+    const accountRows = await supabaseSelect<any[]>("accounts", new URLSearchParams({
+      select: "id,email",
+      email: `eq.${normalizedEmail}`,
+    }));
 
-    if (!result) {
-      throw new Error("validate_updater_access returned no rows");
+    const account = Array.isArray(accountRows) && accountRows.length ? accountRows[0] : null;
+
+    if (!account) {
+      return NextResponse.json({ error: "Account not found" }, { status: 404 });
     }
 
-    if (!result.allowed) {
-      return NextResponse.json(
-        {
-          allowed: false,
-          reason: result.reason_code || "denied",
-          message: result.message,
-          maxDevices: result.max_devices ?? LICENSE_MAX_DEVICES,
-          remainingSlots:
-            result.max_devices === null || result.active_device_count === null
-              ? 0
-              : Math.max(result.max_devices - result.active_device_count, 0),
-          slotsUsed: result.active_device_count ?? 0,
-        },
-        { status: 403 },
-      );
+    const accountId = account.id as string;
+
+    // Upsert device: update last_seen if exists, insert new row if not
+    const now = new Date().toISOString();
+    let isNewDevice = false;
+
+    // Check if this device already exists
+    const existingDevices = await supabaseSelect<any[]>("account_devices", new URLSearchParams({
+      account_id: `eq.${accountId}`,
+      device_id: `eq.${deviceId}`,
+      select: "id",
+    }));
+
+    const deviceExists = Array.isArray(existingDevices) && existingDevices.length > 0;
+
+    try {
+      if (deviceExists) {
+        const updateParams = new URLSearchParams({ account_id: `eq.${accountId}`, device_id: `eq.${deviceId}` });
+        await supabaseUpdate("account_devices", { last_seen: now, device_name: request.headers.get("x-device-name") || null, revoked: false }, updateParams);
+      } else {
+        isNewDevice = true;
+        await supabaseInsert("account_devices", {
+          account_id: accountId,
+          device_id: deviceId,
+          device_name: request.headers.get("x-device-name") || null,
+          first_seen: now,
+          last_seen: now,
+          revoked: false,
+        });
+      }
+    } catch (err) {
+      console.error("Failed to upsert device:", err);
+    }
+
+    // Count total non-revoked devices for this account
+    const allDevices = await supabaseSelect<any[]>("account_devices", new URLSearchParams({
+      account_id: `eq.${accountId}`,
+      revoked: `eq.false`,
+      select: "id",
+    }));
+
+    const totalDeviceCount = Array.isArray(allDevices) ? allDevices.length : 0;
+
+    // Check if total devices exceeds limit
+    if (totalDeviceCount > LICENSE_MAX_DEVICES) {
+      return NextResponse.json({
+        allowed: false,
+        reason: "device_limit",
+        message: `Device limit exceeded (${totalDeviceCount} of ${LICENSE_MAX_DEVICES} devices registered)`,
+        maxDevices: LICENSE_MAX_DEVICES,
+        remainingSlots: 0,
+        slotsUsed: totalDeviceCount,
+      }, { status: 403 });
     }
 
     return NextResponse.json({
       allowed: true,
       email: normalizedEmail,
-      maxDevices: result.max_devices ?? LICENSE_MAX_DEVICES,
-      remainingSlots:
-        result.max_devices === null || result.active_device_count === null
-          ? 0
-          : Math.max(result.max_devices - result.active_device_count, 0),
-      slotsUsed: result.active_device_count ?? 0,
-      message: result.message,
+      maxDevices: LICENSE_MAX_DEVICES,
+      remainingSlots: Math.max(LICENSE_MAX_DEVICES - totalDeviceCount, 0),
+      slotsUsed: totalDeviceCount,
+      message: `Updater access allowed. Registered devices: ${totalDeviceCount}/${LICENSE_MAX_DEVICES}${isNewDevice ? " (new device registered)" : ""}`,
     });
   } catch (error) {
     console.error("Updater validation failed:", error);
