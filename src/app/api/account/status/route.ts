@@ -127,6 +127,7 @@ export async function POST(request: Request) {
       }),
     );
     const account = accountRows[0] ?? null;
+    console.log("Account lookup for email:", email, "Result:", JSON.stringify(account, null, 2));
 
     const purchaseRows = await supabaseSelect<PurchaseRow[]>(
       "purchases",
@@ -139,6 +140,7 @@ export async function POST(request: Request) {
     );
 
     const accountId = getAccountIdentifier(account);
+    console.log("Extracted accountId:", accountId);
 
     let devices: Array<{
       id: string;
@@ -157,6 +159,7 @@ export async function POST(request: Request) {
             select: "*",
           }),
         );
+        console.log("Device lookup result:", JSON.stringify(deviceRows, null, 2));
 
         devices = deviceRows.map((device, index) => ({
           id: getString(device.device_id) || getString(device.id) || `${index}`,
@@ -167,6 +170,8 @@ export async function POST(request: Request) {
       } catch (error) {
         console.warn("Device lookup failed:", error);
       }
+    } else {
+      console.log("No accountId found - skipping device lookup");
     }
 
     const entitlementActive = getBoolean(account?.entitlement_active) ?? false;
