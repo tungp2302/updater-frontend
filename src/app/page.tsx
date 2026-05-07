@@ -653,11 +653,11 @@ export default function Home() {
 
             <div className="mt-6 max-w-3xl space-y-4 text-xs leading-6 text-[#434b59] sm:mt-8 sm:space-y-6 sm:text-base sm:leading-8 lg:text-lg">
               <p>
-                TORQ was born from a simple question: why should premium Commander software cost €78? I discovered Soul Dial and recognized its quality—but also recognized that the price tag locked out an entire community of players who deserved access to this kind of tool. Life totals are a solved problem. The interface and experience shouldn&apos;t come with a premium barrier.
+                TORQ was born from a simple question: why should premium Commander software be treated like a luxury? I discovered Soul Dial and recognized its quality—but also recognized that the price barrier locked out an entire community of players who deserved access to this kind of tool. Life totals are a solved problem. The interface and experience shouldn&apos;t come with a premium barrier.
               </p>
 
               <p>
-                What we&apos;re selling is the software. It has every feature Soul Dial offers, and more—because we&apos;re building in public with you. The hardware is simple: a 1.85-inch intelligent rotary control screen with ESP32-S3 core, openly available on <a href="https://s.click.aliexpress.com/e/_c3XyGxvD" target="_blank" rel="noopener noreferrer" className="text-[#1434d6] underline hover:text-[#091aa0]">AliExpress</a> for around €40, with free shipping and delivery in under a week. This transparency is intentional. We&apos;re not hiding the bill of materials or pretending we engineered something magical. We took accessible components and built software that makes Commander nights better. That&apos;s the value. That&apos;s what you&apos;re investing in.
+                What we&apos;re selling is the software. It has every feature Soul Dial offers, and more—because we&apos;re building in public with you. The hardware is simple: a 1.85-inch intelligent rotary control screen with ESP32-S3 core, openly available on <a href="https://s.click.aliexpress.com/e/_c3XyGxvD" target="_blank" rel="noopener noreferrer" className="text-[#1434d6] underline hover:text-[#091aa0]">AliExpress</a> at an accessible cost, with free shipping and delivery in under a week. This transparency is intentional. We&apos;re not hiding the bill of materials or pretending we engineered something magical. We took accessible components and built software that makes Commander nights better. That&apos;s the value. That&apos;s what you&apos;re investing in.
               </p>
 
               <p>
