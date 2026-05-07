@@ -98,6 +98,51 @@ const featureCards = [
   },
 ];
 
+const hardwareTargets = [
+  {
+    label: "With LED",
+    title: "ESP32-S3 board + 1.85-inch screen + physical knob",
+    note: "LED option 1",
+    href: "https://s.click.aliexpress.com/e/_c3EqcdyX",
+  },
+  {
+    label: "With LED",
+    title: "ESP32-S3 board + 1.85-inch screen + physical knob",
+    note: "LED option 2",
+    href: "https://s.click.aliexpress.com/e/_c3f2pNzp",
+  },
+  {
+    label: "With LED",
+    title: "ESP32-S3 board + 1.85-inch screen + physical knob",
+    note: "LED option 3",
+    href: "https://s.click.aliexpress.com/e/_c3XyGxvD",
+  },
+  {
+    label: "Without LED",
+    title: "ESP32-S3 board + 1.85-inch screen + physical knob",
+    note: "No-LED option 1",
+    href: "https://s.click.aliexpress.com/e/_c3F4TYmr",
+  },
+  {
+    label: "Without LED",
+    title: "ESP32-S3 board + 1.85-inch screen + physical knob",
+    note: "No-LED option 2",
+    href: "https://s.click.aliexpress.com/e/_c3Z2pbFH",
+  },
+  {
+    label: "Without LED",
+    title: "ESP32-S3 board + 1.85-inch screen + physical knob",
+    note: "No-LED option 3",
+    href: "https://s.click.aliexpress.com/e/_c3WKqakb",
+  },
+  {
+    label: "Without LED",
+    title: "ESP32-S3 board + 1.85-inch screen + physical knob",
+    note: "No-LED option 4",
+    href: "https://s.click.aliexpress.com/e/_c4W74lNt",
+  },
+];
+
 const motionItem = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0 },
@@ -105,6 +150,7 @@ const motionItem = {
 
 export default function Home() {
   const carouselRef = useRef<HTMLDivElement | null>(null);
+  const hardwareStripRef = useRef<HTMLDivElement | null>(null);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [downloadEmail, setDownloadEmail] = useState("");
@@ -131,6 +177,20 @@ export default function Home() {
     const slideWidth = carousel.clientWidth + 16;
     carousel.scrollBy({
       left: slideWidth * direction,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollHardwareStrip = (direction: -1 | 1) => {
+    const strip = hardwareStripRef.current;
+
+    if (!strip) {
+      return;
+    }
+
+    const cardWidth = Math.min(strip.clientWidth * 0.85, 360);
+    strip.scrollBy({
+      left: cardWidth * direction,
       behavior: "smooth",
     });
   };
@@ -521,52 +581,55 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-5 md:grid-cols-2">
-              <a
-                href="https://www.aliexpress.com/?aff_short_key=YOUR_AFFILIATE_CODE"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_5px_15px_rgba(0,0,0,0.02)] transition hover:shadow-[0_12px_30px_rgba(20,52,214,0.15)] hover:border-[#1434d6] sm:rounded-[1.6rem] sm:p-6"
+            <div className="relative mt-8 sm:mt-10">
+              <button
+                type="button"
+                onClick={() => scrollHardwareStrip(-1)}
+                aria-label="Previous hardware target"
+                className="absolute left-0 top-1/2 z-10 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#d6dbe4] bg-white text-xl font-light leading-none text-[#1434d6] shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition hover:border-[#1434d6] hover:bg-[#f8faff] sm:h-12 sm:w-12"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7483]">
-                      Display
-                    </p>
-                    <h3 className="mt-2 text-lg font-bold text-[#20242b] sm:text-xl group-hover:text-[#1434d6]">
-                      1.85" Round LCD Display
-                    </h3>
-                    <p className="mt-2 text-xs leading-5 text-[#4b5462] sm:text-sm sm:leading-6">
-                      CST816S capacitive touch screen with ESP32-S3 integration, 240x240 resolution
-                    </p>
-                  </div>
-                  <span className="text-2xl group-hover:translate-x-1 transition">→</span>
-                </div>
-                <p className="mt-4 text-sm font-semibold text-[#1434d6]">View on AliExpress →</p>
-              </a>
+                ‹
+              </button>
 
-              <a
-                href="https://www.aliexpress.com/?aff_short_key=YOUR_AFFILIATE_CODE"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_5px_15px_rgba(0,0,0,0.02)] transition hover:shadow-[0_12px_30px_rgba(20,52,214,0.15)] hover:border-[#1434d6] sm:rounded-[1.6rem] sm:p-6"
+              <button
+                type="button"
+                onClick={() => scrollHardwareStrip(1)}
+                aria-label="Next hardware target"
+                className="absolute right-0 top-1/2 z-10 flex h-10 w-10 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#d6dbe4] bg-white text-xl font-light leading-none text-[#1434d6] shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition hover:border-[#1434d6] hover:bg-[#f8faff] sm:h-12 sm:w-12"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7483]">
-                      Microcontroller
-                    </p>
-                    <h3 className="mt-2 text-lg font-bold text-[#20242b] sm:text-xl group-hover:text-[#1434d6]">
-                      ESP32-S3 DevKit
-                    </h3>
-                    <p className="mt-2 text-xs leading-5 text-[#4b5462] sm:text-sm sm:leading-6">
-                      Dual-core processor, BLE/WiFi connectivity, USB-C programming
-                    </p>
-                  </div>
-                  <span className="text-2xl group-hover:translate-x-1 transition">→</span>
-                </div>
-                <p className="mt-4 text-sm font-semibold text-[#1434d6]">View on AliExpress →</p>
-              </a>
+                ›
+              </button>
+
+              <div
+                ref={hardwareStripRef}
+                className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
+              >
+                {hardwareTargets.map((target, index) => (
+                  <a
+                    key={`${target.label}-${target.note}`}
+                    href={target.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group min-w-[280px] snap-center rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_5px_15px_rgba(0,0,0,0.02)] transition hover:shadow-[0_12px_30px_rgba(20,52,214,0.15)] hover:border-[#1434d6] sm:min-w-[320px] sm:rounded-[1.6rem] sm:p-6 lg:min-w-[340px]"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7483]">
+                          {target.label}
+                        </p>
+                        <h3 className="mt-2 text-lg font-bold text-[#20242b] sm:text-xl group-hover:text-[#1434d6]">
+                          {target.title}
+                        </h3>
+                        <p className="mt-2 text-xs leading-5 text-[#4b5462] sm:text-sm sm:leading-6">
+                          {target.note}
+                        </p>
+                      </div>
+                      <span className="text-2xl group-hover:translate-x-1 transition">→</span>
+                    </div>
+                    <p className="mt-4 text-sm font-semibold text-[#1434d6]">Open target {index + 1} →</p>
+                  </a>
+                ))}
+              </div>
             </div>
 
             <div className="mt-6 p-4 rounded-xl bg-[#f0f3ff] border border-[#d5dff5] sm:mt-8 sm:p-5">
@@ -594,7 +657,7 @@ export default function Home() {
               </p>
 
               <p>
-                What we&apos;re selling is the software. It has every feature Soul Dial offers, and more—because we&apos;re building in public with you. The hardware is simple: a 1.85-inch intelligent rotary control screen with ESP32-S3 core, openly available on <a href="https://www.aliexpress.com/?aff_short_key=YOUR_AFFILIATE_CODE" target="_blank" rel="noopener noreferrer" className="text-[#1434d6] underline hover:text-[#091aa0]">AliExpress</a> for around €40, with free shipping and delivery in under a week. This transparency is intentional. We&apos;re not hiding the bill of materials or pretending we engineered something magical. We took accessible components and built software that makes Commander nights better. That&apos;s the value. That&apos;s what you&apos;re investing in.
+                What we&apos;re selling is the software. It has every feature Soul Dial offers, and more—because we&apos;re building in public with you. The hardware is simple: a 1.85-inch intelligent rotary control screen with ESP32-S3 core, openly available on <a href="https://s.click.aliexpress.com/e/_c3XyGxvD" target="_blank" rel="noopener noreferrer" className="text-[#1434d6] underline hover:text-[#091aa0]">AliExpress</a> for around €40, with free shipping and delivery in under a week. This transparency is intentional. We&apos;re not hiding the bill of materials or pretending we engineered something magical. We took accessible components and built software that makes Commander nights better. That&apos;s the value. That&apos;s what you&apos;re investing in.
               </p>
 
               <p>
