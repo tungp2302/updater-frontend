@@ -91,16 +91,14 @@ export async function POST(request: Request) {
     );
 
     await supabaseUpsert(
-      "entitlements",
+      "accounts",
       {
-        active: true,
-        email,
-        last_checkout_session_id: session.id,
+        email_norm: email,
+        entitlement_active: true,
         max_devices: LICENSE_MAX_DEVICES,
-        stripe_customer_id: customerId,
         updated_at: new Date().toISOString(),
       },
-      "email",
+      "email_norm",
     );
 
     return NextResponse.json({ received: true });

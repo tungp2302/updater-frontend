@@ -1,37 +1,47 @@
 import { NextResponse } from "next/server";
 
 import { LICENSE_MAX_DEVICES } from "@/lib/server/env";
-import { supabaseInsert, supabaseSelect, supabaseUpdate } from "@/lib/server/supabase";
+import { supabaseRpc } from "@/lib/server/supabase";
 
-type EntitlementRow = {
-  active: boolean;
-  email: string;
-  last_checkout_session_id: string | null;
-  max_devices: number;
-  stripe_customer_id: string | null;
-  updated_at: string;
+type ValidateAccessRow = {
+  account_id: string | null;
+  active_device_count: number | null;
+  allowed: boolean;
+  max_devices: number | null;
+  message: string | null;
+  reason_code: string | null;
 };
 
-type DeviceActivationRow = {
-  device_id: string;
-  email: string;
-  first_seen_at: string;
-  last_seen_at: string;
+type RequestBody = {
+  appVersion?: string;
+  deviceId?: string;
+  email?: string;
 };
 
 function normalizeEmail(value: string): string {
   return value.trim().toLowerCase();
 }
 
-async function getRequestBody(request: Request): Promise<{ deviceId?: string; email?: string }> {
+async function getRequestBody(request: Request): Promise<RequestBody> {
   const parsed = (await request.json().catch(() => null)) as
-    | { deviceId?: unknown; email?: unknown }
+    | { appVersion?: unknown; deviceId?: unknown; email?: unknown }
     | null;
 
   return {
+    appVersion: typeof parsed?.appVersion === "string" ? parsed.appVersion.trim() : undefined,
     deviceId: typeof parsed?.deviceId === "string" ? parsed.deviceId.trim() : undefined,
     email: typeof parsed?.email === "string" ? parsed.email.trim() : undefined,
   };
+}
+
+function getClientIp(request: Request): string | null {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+
+  if (!forwardedFor) {
+    return null;
+  }
+
+  return forwardedFor.split(",")[0]?.trim() || null;
 }
 
 export async function POST(request: Request) {
@@ -42,88 +52,51 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
+    if (!deviceId) {
+      return NextResponse.json({ error: "Device ID is required" }, { status: 400 });
+    }
+
     const normalizedEmail = normalizeEmail(email);
-    const entitlementRows = await supabaseSelect<EntitlementRow[]>(
-      "entitlements",
-      new URLSearchParams({
-        email: `eq.${normalizedEmail}`,
-        limit: "1",
-        select: "email,active,max_devices,last_checkout_session_id,stripe_customer_id,updated_at",
-      }),
-    );
-    const entitlement = entitlementRows[0];
+    const resultRows = await supabaseRpc<ValidateAccessRow[]>("validate_updater_access", {
+      p_account_email: normalizedEmail,
+      p_device_id: deviceId,
+      p_app_version: null,
+      p_request_ip: getClientIp(request),
+      p_user_agent: request.headers.get("user-agent"),
+    });
+    const result = resultRows[0];
 
-    if (!entitlement || !entitlement.active) {
+    if (!result) {
+      throw new Error("validate_updater_access returned no rows");
+    }
+
+    if (!result.allowed) {
       return NextResponse.json(
         {
           allowed: false,
-          reason: "no_active_purchase",
-          remainingSlots: 0,
+          reason: result.reason_code || "denied",
+          message: result.message,
+          maxDevices: result.max_devices ?? LICENSE_MAX_DEVICES,
+          remainingSlots:
+            result.max_devices === null || result.active_device_count === null
+              ? 0
+              : Math.max(result.max_devices - result.active_device_count, 0),
+          slotsUsed: result.active_device_count ?? 0,
         },
         { status: 403 },
       );
     }
-
-    const activationRows = await supabaseSelect<DeviceActivationRow[]>(
-      "device_activations",
-      new URLSearchParams({
-        email: `eq.${normalizedEmail}`,
-        select: "device_id,email,first_seen_at,last_seen_at",
-      }),
-    );
-    const registeredDevice = deviceId
-      ? activationRows.find((row) => row.device_id === deviceId)
-      : undefined;
-
-    if (deviceId && registeredDevice && registeredDevice.email !== normalizedEmail) {
-      return NextResponse.json(
-        {
-          allowed: false,
-          reason: "device_assigned_elsewhere",
-          remainingSlots: Math.max(entitlement.max_devices - activationRows.length, 0),
-        },
-        { status: 403 },
-      );
-    }
-
-    if (deviceId && !registeredDevice && activationRows.length >= entitlement.max_devices) {
-      return NextResponse.json(
-        {
-          allowed: false,
-          reason: "device_limit_reached",
-          remainingSlots: 0,
-        },
-        { status: 403 },
-      );
-    }
-
-    if (deviceId) {
-      if (registeredDevice) {
-        await supabaseUpdate(
-          "device_activations",
-          {
-            last_seen_at: new Date().toISOString(),
-          },
-          new URLSearchParams({ device_id: `eq.${deviceId}` }),
-        );
-      } else {
-        await supabaseInsert("device_activations", {
-          device_id: deviceId,
-          email: normalizedEmail,
-          first_seen_at: new Date().toISOString(),
-          last_seen_at: new Date().toISOString(),
-        });
-      }
-    }
-
-    const usedSlots = deviceId && !registeredDevice ? activationRows.length + 1 : activationRows.length;
 
     return NextResponse.json({
       allowed: true,
       email: normalizedEmail,
-      maxDevices: entitlement.max_devices ?? LICENSE_MAX_DEVICES,
-      remainingSlots: Math.max(entitlement.max_devices - usedSlots, 0),
-      slotsUsed: usedSlots,
+      maxDevices: result.max_devices ?? LICENSE_MAX_DEVICES,
+      remainingSlots:
+        result.max_devices === null || result.active_device_count === null
+          ? 0
+          : Math.max(result.max_devices - result.active_device_count, 0),
+      slotsUsed: result.active_device_count ?? 0,
+      message: result.message,
     });
   } catch (error) {
     console.error("Updater validation failed:", error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -106,6 +106,18 @@ export default function Home() {
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [downloadEmail, setDownloadEmail] = useState("");
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const [checkoutState, setCheckoutState] = useState<string | null>(null);
+  const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setCheckoutState(params.get("checkout"));
+    setCheckoutSessionId(params.get("session_id"));
+  }, []);
 
   const scrollCarousel = (direction: -1 | 1) => {
     const carousel = carouselRef.current;
@@ -144,6 +156,47 @@ export default function Home() {
     } catch (error) {
       setCheckoutError(error instanceof Error ? error.message : "Checkout unavailable right now");
       setCheckoutLoading(false);
+    }
+  };
+
+  const claimDownload = async () => {
+    setDownloadLoading(true);
+    setDownloadError(null);
+    setDownloadUrl(null);
+
+    try {
+      if (!checkoutSessionId) {
+        throw new Error("Missing checkout session ID in the success URL");
+      }
+
+      const response = await fetch("/api/updater/download", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: downloadEmail,
+          sessionId: checkoutSessionId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      const payload = (await response.json()) as { url?: string };
+
+      if (!payload.url) {
+        throw new Error("Download URL is missing from the server response");
+      }
+
+      setDownloadUrl(payload.url);
+    } catch (error) {
+      setDownloadError(
+        error instanceof Error ? error.message : "Could not validate purchase for download",
+      );
+    } finally {
+      setDownloadLoading(false);
     }
   };
 
@@ -252,6 +305,47 @@ export default function Home() {
               >
                 {checkoutError}
               </motion.p>
+            ) : null}
+
+            {checkoutState === "success" ? (
+              <motion.div
+                variants={motionItem}
+                className="mt-6 max-w-xl rounded-2xl border border-[#d5e5d7] bg-[#f4fbf5] p-4"
+              >
+                <p className="text-sm font-semibold text-[#1f5a2f]">
+                  Payment confirmed. Enter the checkout email to unlock your updater ZIP download.
+                </p>
+                <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+                  <input
+                    type="email"
+                    value={downloadEmail}
+                    onChange={(event) => setDownloadEmail(event.target.value)}
+                    placeholder="you@example.com"
+                    className="h-11 flex-1 rounded-xl border border-[#bfd4c2] bg-white px-3 text-sm text-[#1f232b] outline-none focus:border-[#1f5a2f]"
+                  />
+                  <button
+                    type="button"
+                    onClick={claimDownload}
+                    disabled={downloadLoading}
+                    className="h-11 rounded-xl bg-[#1f5a2f] px-4 text-sm font-semibold text-white transition hover:bg-[#184928] disabled:opacity-70"
+                  >
+                    {downloadLoading ? "Checking..." : "Get download"}
+                  </button>
+                </div>
+
+                {downloadError ? (
+                  <p className="mt-2 text-xs font-medium text-[#a2362d]">{downloadError}</p>
+                ) : null}
+
+                {downloadUrl ? (
+                  <a
+                    href={downloadUrl}
+                    className="mt-3 inline-flex text-sm font-semibold text-[#1434d6] underline"
+                  >
+                    Download updater ZIP
+                  </a>
+                ) : null}
+              </motion.div>
             ) : null}
 
             <motion.div variants={motionItem} className="mt-10 grid gap-4 sm:grid-cols-2">

@@ -84,3 +84,13 @@ export function supabaseUpdate<T>(table: string, body: unknown, searchParams: UR
     },
   });
 }
+
+export function supabaseRpc<T>(fn: string, body: unknown): Promise<T> {
+  return supabaseRequest<T>(`rpc/${fn}`, {
+    method: "POST",
+    body,
+    headers: {
+      Prefer: "return=representation",
+    },
+  });
+}
