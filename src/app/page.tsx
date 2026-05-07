@@ -220,7 +220,7 @@ export default function Home() {
 
       <div className="relative mx-auto flex min-h-screen max-w-[1280px] flex-col px-4 pb-12 pt-4 sm:px-6 lg:px-8">
         <div className="rounded-none bg-[#0e24d6] px-4 py-1.5 text-center text-xs font-semibold tracking-[0.02em] text-white sm:text-sm">
-          Professional software, fairly priced at €10
+          Everything you need for Commander nights
         </div>
 
         <header className="flex items-center justify-between gap-2 bg-white px-3 py-3 sm:px-4 sm:py-4">
