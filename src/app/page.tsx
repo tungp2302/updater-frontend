@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 const packs = [
   {
@@ -266,9 +267,13 @@ export default function Home() {
                 </a>
               ))}
             </nav>
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[#1f232b] text-[#1f232b] sm:h-10 sm:w-10 sm:text-lg">
-              <span className="text-sm leading-none sm:text-lg">◻</span>
-            </div>
+            <Link
+              href="/account"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#1f232b] text-[#1f232b] transition hover:border-[#1434d6] hover:text-[#1434d6] sm:h-10 sm:w-10 sm:text-lg"
+              aria-label="Open account dashboard"
+            >
+              <span className="text-sm leading-none sm:text-lg">⌂</span>
+            </Link>
           </div>
         </header>
 
