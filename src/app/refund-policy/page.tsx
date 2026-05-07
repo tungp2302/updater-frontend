@@ -181,11 +181,27 @@ export default function RefundPolicy() {
           </section>
 
           <section className="border-t border-[#dde2ea] pt-8 mt-12">
-            <p className="text-sm text-[#667086]">
-              Last updated: May 2026 | For our full legal information, see our{" "}
+            <div className="flex gap-6 flex-wrap justify-center text-sm mb-6">
+              <Link href="/" className="text-[#1434d6] hover:text-[#091aa0]">
+                Home
+              </Link>
               <Link href="/imprint" className="text-[#1434d6] hover:text-[#091aa0]">
                 Imprint
               </Link>
+              <a href="mailto:support@torq-lab.com" className="text-[#1434d6] hover:text-[#091aa0]">
+                Contact
+              </a>
+              <a
+                href="https://www.instagram.com/torqlab.mtg/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#1434d6] hover:text-[#091aa0]"
+              >
+                Instagram
+              </a>
+            </div>
+            <p className="text-sm text-[#667086]">
+              Last updated: May 2026
             </p>
           </section>
         </article>

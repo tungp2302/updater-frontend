@@ -212,6 +212,14 @@ export default function Imprint() {
             <a href="mailto:support@torq-lab.com" className="text-[#1434d6] hover:text-[#091aa0]">
               Contact
             </a>
+            <a
+              href="https://www.instagram.com/torqlab.mtg/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#1434d6] hover:text-[#091aa0]"
+            >
+              Instagram
+            </a>
           </div>
 
           <p className="text-center text-xs text-[#667086] mt-8">
