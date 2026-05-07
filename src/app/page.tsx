@@ -390,7 +390,8 @@ export default function Home() {
                   <h3 className="mt-2 text-xl font-bold text-[#20242b] sm:text-2xl">{pack.name}</h3>
                   <p className="mt-1 text-2xl font-black text-[#1434d6] sm:text-3xl">{pack.price}</p>
                   <p className="mt-2 text-xs leading-5 text-[#20242b] sm:mt-3 sm:text-sm sm:leading-6">{pack.details}</p>
-                </article>
+                    <p className="mt-3 text-xs font-medium text-[#667086]">🖥️ Windows app</p>
+                  </article>
               ))}
             </motion.div>
           </motion.div>
