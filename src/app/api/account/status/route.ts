@@ -127,7 +127,10 @@ export async function POST(request: Request) {
       }),
     );
     const account = accountRows[0] ?? null;
-    console.log("Account lookup for email:", email, "Result:", JSON.stringify(account, null, 2));
+    console.log("Account lookup for email:", email);
+    console.log("Full accountRows:", JSON.stringify(accountRows, null, 2));
+    console.log("Account object:", JSON.stringify(account, null, 2));
+    console.log("Account keys:", account ? Object.keys(account) : "null");
 
     const purchaseRows = await supabaseSelect<PurchaseRow[]>(
       "purchases",
