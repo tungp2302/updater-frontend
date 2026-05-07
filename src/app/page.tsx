@@ -606,6 +606,14 @@ export default function Home() {
               <a href="mailto:support@torq-lab.com" className="text-[#1434d6] hover:text-[#091aa0] transition">
                 Contact
               </a>
+              <a
+                href="https://www.instagram.com/torqlab.mtg/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#1434d6] hover:text-[#091aa0] transition"
+              >
+                Instagram
+              </a>
             </div>
             <p>© 2026 TORQ Labs. All rights reserved.</p>
           </div>
