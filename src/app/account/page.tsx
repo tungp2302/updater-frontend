@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 type AccountDevice = {
@@ -32,10 +33,12 @@ type AccountStatus = {
 };
 
 export default function AccountPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<AccountStatus | null>(null);
+  const leftNav = ["ABOUT US", "CONTACT"];
 
   const lookupStatus = async () => {
     setLoading(true);
@@ -66,11 +69,62 @@ export default function AccountPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f6f6f6] text-[#1f232b]">
-      <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
+    <main className="relative min-h-screen overflow-hidden bg-[#f6f6f6] text-[#1f232b]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_7%_12%,_rgba(38,70,151,0.08),_transparent_28%),radial-gradient(circle_at_100%_18%,_rgba(188,194,206,0.24),_transparent_28%),linear-gradient(180deg,_#ffffff_0%,_#f0f0f0_100%)]" />
+      <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-4 pb-12 pt-4 sm:px-6 lg:px-8">
         <div className="rounded-none bg-[#0e24d6] px-4 py-1.5 text-center text-xs font-semibold tracking-[0.02em] text-white sm:text-sm">
           License dashboard for TORQ updater buyers
         </div>
+
+        {/* Header */}
+        <header className="flex items-center justify-between gap-2 bg-white px-3 py-3 sm:px-4 sm:py-4">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 text-[#1f232b] md:hidden"
+            aria-label="Toggle menu"
+          >
+            <div className="h-0.5 w-6 bg-current" />
+            <div className="h-0.5 w-6 bg-current" />
+            <div className="h-0.5 w-6 bg-current" />
+          </button>
+
+          <div className="flex flex-1 justify-center md:absolute md:left-1/2 md:-translate-x-1/2">
+            <Link href="/">
+              <Image
+                src="/torq/logo-clear-bg.png"
+                alt="TORQ"
+                width={656}
+                height={236}
+                className="h-16 w-auto sm:h-20 md:h-[126px]"
+                loading="eager"
+                priority
+              />
+            </Link>
+          </div>
+
+          <nav className="hidden items-center gap-6 text-xs font-medium uppercase tracking-[0.14em] text-[#1434d6] sm:gap-8 sm:text-sm md:flex">
+            {leftNav.map((item) => (
+              <a
+                key={item}
+                href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : "#"}
+                className="transition hover:text-[#091aa0]"
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              href="/account"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#1f232b] text-[#1f232b] transition hover:border-[#1434d6] hover:text-[#1434d6] sm:h-10 sm:w-10 sm:text-lg"
+              aria-label="Open account dashboard"
+            >
+              <span className="text-sm leading-none sm:text-lg">⌂</span>
+            </Link>
+          </div>
+        </header>
 
         <section className="mt-4 rounded-[1.5rem] border border-[#dde2ea] bg-white p-5 shadow-[0_18px_45px_rgba(0,0,0,0.05)] sm:mt-6 sm:p-8 lg:p-10">
           <div className="max-w-3xl">
