@@ -13,6 +13,7 @@ type AccountRow = {
   email_norm?: string | null;
   entitlement_active?: boolean | null;
   max_devices?: number | null;
+  active_devices?: number | null;
   updated_at?: string | null;
   id?: string | null;
 };
@@ -123,14 +124,10 @@ export async function POST(request: Request) {
       new URLSearchParams({
         email_norm: `eq.${email}`,
         limit: "1",
-        select: "id,email_norm,entitlement_active,max_devices,updated_at",
+        select: "id,email_norm,entitlement_active,max_devices,active_devices,updated_at",
       }),
     );
     const account = accountRows[0] ?? null;
-    console.log("Account lookup for email:", email);
-    console.log("Full accountRows:", JSON.stringify(accountRows, null, 2));
-    console.log("Account object:", JSON.stringify(account, null, 2));
-    console.log("Account keys:", account ? Object.keys(account) : "null");
 
     const purchaseRows = await supabaseSelect<PurchaseRow[]>(
       "purchases",
@@ -143,7 +140,6 @@ export async function POST(request: Request) {
     );
 
     const accountId = getAccountIdentifier(account);
-    console.log("Extracted accountId:", accountId);
 
     let devices: Array<{
       id: string;
@@ -152,34 +148,10 @@ export async function POST(request: Request) {
       status: string;
     }> = [];
 
-    if (accountId) {
-      try {
-        const deviceRows = await supabaseSelect<DeviceRow[]>(
-          "account_devices",
-          new URLSearchParams({
-            account_id: `eq.${accountId}`,
-            order: "last_seen_at.desc",
-            select: "*",
-          }),
-        );
-        console.log("Device lookup result:", JSON.stringify(deviceRows, null, 2));
-
-        devices = deviceRows.map((device, index) => ({
-          id: getString(device.device_id) || getString(device.id) || `${index}`,
-          lastSeenAt: getDeviceLastSeen(device),
-          name: getDeviceName(device, index),
-          status: getDeviceStatus(device),
-        }));
-      } catch (error) {
-        console.warn("Device lookup failed:", error);
-      }
-    } else {
-      console.log("No accountId found - skipping device lookup");
-    }
-
+    // Use active_devices count from accounts table
+    const activeDeviceCount = getNumber(account?.active_devices) ?? 0;
     const entitlementActive = getBoolean(account?.entitlement_active) ?? false;
     const maxDevices = getNumber(account?.max_devices) ?? LICENSE_MAX_DEVICES;
-    const activeDeviceCount = devices.length;
     const remainingSlots = Math.max(maxDevices - activeDeviceCount, 0);
     const latestPurchase = purchaseRows[0] ?? null;
     const latestSessionId = latestPurchase?.checkout_session_id || null;

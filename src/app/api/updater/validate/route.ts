@@ -103,7 +103,7 @@ export async function POST(request: Request) {
       console.error("Failed to upsert device:", err);
     }
 
-    // Count total non-revoked devices for this account
+    // Count total non-revoked devices and update accounts table
     const allDevices = await supabaseSelect<any[]>("account_devices", new URLSearchParams({
       account_id: `eq.${accountId}`,
       revoked: `eq.false`,
@@ -111,6 +111,15 @@ export async function POST(request: Request) {
     }));
 
     const totalDeviceCount = Array.isArray(allDevices) ? allDevices.length : 0;
+
+    // Update the accounts table with current device count
+    if (isNewDevice) {
+      try {
+        await supabaseUpdate("accounts", { active_devices: totalDeviceCount }, new URLSearchParams({ id: `eq.${accountId}` }));
+      } catch (err) {
+        console.error("Failed to update device count:", err);
+      }
+    }
 
     // Check if total devices exceeds limit
     if (totalDeviceCount > LICENSE_MAX_DEVICES) {
