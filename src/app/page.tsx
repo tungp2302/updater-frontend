@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -32,12 +32,17 @@ const heroSlides: HeroSlide[] = [
   },
   {
     kind: "image",
+    src: "/torq/torq-players-modes.png",
+    title: "Players modes",
+  },
+  {
+    kind: "image",
     src: "/torq/functions.png",
     title: "Functions",
   },
   {
     kind: "image",
-    src: "/torq/led.png",
+    src: "/torq/torq-led-warning.png",
     title: "LED",
   },
   {
@@ -99,6 +104,8 @@ const motionItem = {
 
 export default function Home() {
   const carouselRef = useRef<HTMLDivElement | null>(null);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const scrollCarousel = (direction: -1 | 1) => {
     const carousel = carouselRef.current;
@@ -112,6 +119,32 @@ export default function Home() {
       left: slideWidth * direction,
       behavior: "smooth",
     });
+  };
+
+  const startCheckout = async () => {
+    setCheckoutLoading(true);
+    setCheckoutError(null);
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      const payload = (await response.json()) as { url?: string };
+
+      if (!payload.url) {
+        throw new Error("Checkout URL was missing from the server response");
+      }
+
+      window.location.assign(payload.url);
+    } catch (error) {
+      setCheckoutError(error instanceof Error ? error.message : "Checkout unavailable right now");
+      setCheckoutLoading(false);
+    }
   };
 
   return (
@@ -155,6 +188,7 @@ export default function Home() {
               width={656}
               height={236}
               className="h-28 w-auto sm:h-[126px]"
+              loading="eager"
               priority
             />
           </div>
@@ -201,13 +235,24 @@ export default function Home() {
             </motion.p>
 
             <motion.div variants={motionItem} className="mt-10 flex flex-wrap gap-5" id="purchase">
-              <a
-                href={process.env.NEXT_PUBLIC_CHECKOUT_URL ?? "#"}
+              <button
+                type="button"
+                onClick={startCheckout}
+                disabled={checkoutLoading}
                 className="inline-flex h-16 min-w-[240px] items-center justify-center rounded-full bg-[#1434d6] px-8 text-lg font-extrabold uppercase tracking-[0.04em] text-white shadow-[0_14px_30px_rgba(20,52,214,0.25)] transition hover:bg-[#0f2cbd]"
               >
-                Buy now
-              </a>
+                {checkoutLoading ? "Opening checkout..." : "Buy now"}
+              </button>
             </motion.div>
+
+            {checkoutError ? (
+              <motion.p
+                variants={motionItem}
+                className="mt-3 max-w-xl text-sm font-medium text-[#a2362d]"
+              >
+                {checkoutError}
+              </motion.p>
+            ) : null}
 
             <motion.div variants={motionItem} className="mt-10 grid gap-4 sm:grid-cols-2">
               {packs.map((pack) => (
