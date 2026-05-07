@@ -121,7 +121,7 @@ export async function POST(request: Request) {
     const accountRows = await supabaseSelect<AccountRow[]>(
       "accounts",
       new URLSearchParams({
-        email_norm: `eq.${email}`,
+        email: `eq.${email}`,
         limit: "1",
         select: "*",
       }),
