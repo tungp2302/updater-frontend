@@ -524,7 +524,7 @@ export default function Home() {
               </p>
 
               <p>
-                What we&apos;re selling is the software. It has every feature Soul Dial offers, and more—because we&apos;re building in public with you. The hardware is simple: a 1.85-inch intelligent rotary control screen with ESP32-S3 core, openly available on AliExpress for around €40, with free shipping and delivery in under a week. This transparency is intentional. We&apos;re not hiding the bill of materials or pretending we engineered something magical. We took accessible components and built software that makes Commander nights better. That&apos;s the value. That&apos;s what you&apos;re investing in.
+                What we&apos;re selling is the software. It has every feature Soul Dial offers, and more—because we&apos;re building in public with you. The hardware is simple: a 1.85-inch intelligent rotary control screen with ESP32-S3 core, openly available on <a href="https://www.aliexpress.com/?aff_short_key=YOUR_AFFILIATE_CODE" target="_blank" rel="noopener noreferrer" className="text-[#1434d6] underline hover:text-[#091aa0]">AliExpress</a> for around €40, with free shipping and delivery in under a week. This transparency is intentional. We&apos;re not hiding the bill of materials or pretending we engineered something magical. We took accessible components and built software that makes Commander nights better. That&apos;s the value. That&apos;s what you&apos;re investing in.
               </p>
 
               <p>
@@ -537,6 +537,76 @@ export default function Home() {
 
               <p>
                 If you have ideas, spotted something that could be better, or just want to share how TORQ fits into your game nights—reach out. This exists because we believe that accessible, community-driven software should be the standard, not the exception. Let&apos;s build something that respects your time, your budget, and your game.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="pb-12 sm:pb-16 lg:pb-20">
+          <div className="rounded-[1.2rem] border border-[#dde2ea] bg-[linear-gradient(135deg,#ffffff_0%,#f8f9fb_100%)] p-4 shadow-[0_10px_30px_rgba(0,0,0,0.03)] sm:rounded-[1.6rem] sm:p-6 sm:shadow-[0_15px_40px_rgba(0,0,0,0.04)] lg:rounded-[2rem] lg:p-10 lg:shadow-[0_18px_45px_rgba(0,0,0,0.05)]">
+            <div className="max-w-3xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#667086]">
+                Hardware components
+              </p>
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[#20242b] sm:mt-3 sm:text-3xl lg:text-4xl">
+                Get the components yourself
+              </h2>
+              <p className="mt-3 max-w-2xl text-xs leading-6 text-[#434b59] sm:mt-4 sm:text-base sm:leading-7 lg:text-lg">
+                TORQ runs on accessible, affordable components available on AliExpress. Build your own hardware and run our software for total transparency and control.
+              </p>
+            </div>
+
+            <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-5 md:grid-cols-2">
+              <a
+                href="https://www.aliexpress.com/?aff_short_key=YOUR_AFFILIATE_CODE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_5px_15px_rgba(0,0,0,0.02)] transition hover:shadow-[0_12px_30px_rgba(20,52,214,0.15)] hover:border-[#1434d6] sm:rounded-[1.6rem] sm:p-6"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7483]">
+                      Display
+                    </p>
+                    <h3 className="mt-2 text-lg font-bold text-[#20242b] sm:text-xl group-hover:text-[#1434d6]">
+                      1.85" Round LCD Display
+                    </h3>
+                    <p className="mt-2 text-xs leading-5 text-[#4b5462] sm:text-sm sm:leading-6">
+                      CST816S capacitive touch screen with ESP32-S3 integration, 240x240 resolution
+                    </p>
+                  </div>
+                  <span className="text-2xl group-hover:translate-x-1 transition">→</span>
+                </div>
+                <p className="mt-4 text-sm font-semibold text-[#1434d6]">View on AliExpress →</p>
+              </a>
+
+              <a
+                href="https://www.aliexpress.com/?aff_short_key=YOUR_AFFILIATE_CODE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_5px_15px_rgba(0,0,0,0.02)] transition hover:shadow-[0_12px_30px_rgba(20,52,214,0.15)] hover:border-[#1434d6] sm:rounded-[1.6rem] sm:p-6"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7483]">
+                      Microcontroller
+                    </p>
+                    <h3 className="mt-2 text-lg font-bold text-[#20242b] sm:text-xl group-hover:text-[#1434d6]">
+                      ESP32-S3 DevKit
+                    </h3>
+                    <p className="mt-2 text-xs leading-5 text-[#4b5462] sm:text-sm sm:leading-6">
+                      Dual-core processor, BLE/WiFi connectivity, USB-C programming
+                    </p>
+                  </div>
+                  <span className="text-2xl group-hover:translate-x-1 transition">→</span>
+                </div>
+                <p className="mt-4 text-sm font-semibold text-[#1434d6]">View on AliExpress →</p>
+              </a>
+            </div>
+
+            <div className="mt-6 p-4 rounded-xl bg-[#f0f3ff] border border-[#d5dff5] sm:mt-8 sm:p-5">
+              <p className="text-xs font-semibold text-[#0f2cbd] sm:text-sm">
+                💡 Affiliate disclosure: These are direct links to AliExpress with our affiliate code. We earn a small commission if you purchase through these links, helping us continue development at no extra cost to you.
               </p>
             </div>
           </div>
