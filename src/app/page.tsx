@@ -112,6 +112,7 @@ export default function Home() {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [checkoutState, setCheckoutState] = useState<string | null>(null);
   const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -221,8 +222,31 @@ export default function Home() {
           Save over 40% compared to Soul Dial
         </div>
 
-        <header className="flex items-center justify-between gap-4 bg-white px-2 py-5 sm:px-4">
-          <nav className="hidden items-center gap-8 text-sm font-medium uppercase tracking-[0.14em] text-[#1434d6] md:flex">
+        <header className="flex items-center justify-between gap-2 bg-white px-3 py-3 sm:px-4 sm:py-4">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 text-[#1f232b] md:hidden"
+            aria-label="Toggle menu"
+          >
+            <div className="h-0.5 w-6 bg-current" />
+            <div className="h-0.5 w-6 bg-current" />
+            <div className="h-0.5 w-6 bg-current" />
+          </button>
+
+          <div className="flex flex-1 justify-center md:absolute md:left-1/2 md:-translate-x-1/2">
+            <Image
+              src="/torq/logo-clear-bg.png"
+              alt="TORQ"
+              width={656}
+              height={236}
+              className="h-16 w-auto sm:h-20 md:h-[126px]"
+              loading="eager"
+              priority
+            />
+          </div>
+
+          <nav className="hidden items-center gap-6 text-xs font-medium uppercase tracking-[0.14em] text-[#1434d6] sm:gap-8 sm:text-sm md:flex">
             {leftNav.map((item) => (
               <a
                 key={item}
@@ -234,19 +258,7 @@ export default function Home() {
             ))}
           </nav>
 
-          <div className="flex flex-1 justify-center md:absolute md:left-1/2 md:-translate-x-1/2 md:justify-center">
-            <Image
-              src="/torq/logo-clear-bg.png"
-              alt="TORQ"
-              width={656}
-              height={236}
-              className="h-28 w-auto sm:h-[126px]"
-              loading="eager"
-              priority
-            />
-          </div>
-
-          <div className="flex items-center gap-4 sm:gap-8">
+          <div className="flex items-center gap-3 sm:gap-4">
             <nav className="hidden items-center gap-8 text-sm font-medium uppercase tracking-[0.14em] text-[#1434d6] md:flex">
               {rightNav.map((item) => (
                 <a key={item} href="#" className="transition hover:text-[#091aa0]">
@@ -254,13 +266,31 @@ export default function Home() {
                 </a>
               ))}
             </nav>
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#1f232b] text-[#1f232b]">
-              <span className="text-lg leading-none">◻</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[#1f232b] text-[#1f232b] sm:h-10 sm:w-10 sm:text-lg">
+              <span className="text-sm leading-none sm:text-lg">◻</span>
             </div>
           </div>
         </header>
 
-        <section className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-14">
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="bg-white px-3 py-3 md:hidden">
+            <nav className="flex flex-col gap-3">
+              {leftNav.map((item) => (
+                <a
+                  key={item}
+                  href={item === "CONTACT" ? "#contact-form" : item === "ABOUT US" ? "#about-us" : "#"}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-sm font-medium uppercase tracking-[0.12em] text-[#1434d6] transition hover:text-[#091aa0]"
+                >
+                  {item}
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
+
+        <section className="grid flex-1 items-center gap-6 py-6 sm:gap-8 sm:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-14">
           <motion.div
             initial="hidden"
             animate="show"
@@ -269,30 +299,30 @@ export default function Home() {
           >
             <motion.p
               variants={motionItem}
-              className="mb-6 inline-flex rounded-full border border-[#d5d8df] bg-[#ffffff]/90 px-4 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#667086]"
+              className="mb-4 inline-flex rounded-full border border-[#d5d8df] bg-[#ffffff]/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#667086] sm:mb-6 sm:px-4"
             >
               New release
             </motion.p>
             <motion.h1
               variants={motionItem}
-              className="max-w-xl text-5xl font-extrabold leading-[1.03] tracking-tight text-[#20242b] sm:text-6xl lg:text-[4.35rem]"
+              className="max-w-xl text-3xl font-extrabold leading-[1.05] tracking-tight text-[#20242b] sm:text-4xl md:text-5xl lg:text-[4.35rem]"
             >
               MTG Life Counter Updater
             </motion.h1>
             <motion.p
               variants={motionItem}
-              className="mt-6 max-w-xl text-lg leading-8 text-[#20242b]"
+              className="mt-4 max-w-xl text-sm leading-7 text-[#20242b] sm:mt-6 sm:text-base sm:leading-8"
             >
               Track life totals, use the counter library, card lookup, dice roller and LED status in
               one premium handheld interface.
             </motion.p>
 
-            <motion.div variants={motionItem} className="mt-10 flex flex-wrap gap-5" id="purchase">
+            <motion.div variants={motionItem} className="mt-6 flex flex-wrap gap-4 sm:mt-10 sm:gap-5" id="purchase">
               <button
                 type="button"
                 onClick={startCheckout}
                 disabled={checkoutLoading}
-                className="inline-flex h-16 min-w-[240px] items-center justify-center rounded-full bg-[#1434d6] px-8 text-lg font-extrabold uppercase tracking-[0.04em] text-white shadow-[0_14px_30px_rgba(20,52,214,0.25)] transition hover:bg-[#0f2cbd]"
+                className="inline-flex h-12 min-w-[200px] items-center justify-center rounded-full bg-[#1434d6] px-6 text-base font-extrabold uppercase tracking-[0.04em] text-white shadow-[0_14px_30px_rgba(20,52,214,0.25)] transition hover:bg-[#0f2cbd] sm:h-16 sm:min-w-[240px] sm:px-8 sm:text-lg"
               >
                 {checkoutLoading ? "Opening checkout..." : "Buy now"}
               </button>
@@ -301,7 +331,7 @@ export default function Home() {
             {checkoutError ? (
               <motion.p
                 variants={motionItem}
-                className="mt-3 max-w-xl text-sm font-medium text-[#a2362d]"
+                className="mt-2 max-w-xl text-xs font-medium text-[#a2362d] sm:mt-3 sm:text-sm"
               >
                 {checkoutError}
               </motion.p>
@@ -310,24 +340,24 @@ export default function Home() {
             {checkoutState === "success" ? (
               <motion.div
                 variants={motionItem}
-                className="mt-6 max-w-xl rounded-2xl border border-[#d5e5d7] bg-[#f4fbf5] p-4"
+                className="mt-4 max-w-xl rounded-xl border border-[#d5e5d7] bg-[#f4fbf5] p-3 sm:mt-6 sm:rounded-2xl sm:p-4"
               >
-                <p className="text-sm font-semibold text-[#1f5a2f]">
+                <p className="text-xs font-semibold text-[#1f5a2f] sm:text-sm">
                   Payment confirmed. Enter the checkout email to unlock your updater ZIP download.
                 </p>
-                <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-2 flex flex-col gap-2 sm:mt-3 sm:flex-row sm:gap-3">
                   <input
                     type="email"
                     value={downloadEmail}
                     onChange={(event) => setDownloadEmail(event.target.value)}
                     placeholder="you@example.com"
-                    className="h-11 flex-1 rounded-xl border border-[#bfd4c2] bg-white px-3 text-sm text-[#1f232b] outline-none focus:border-[#1f5a2f]"
+                    className="h-10 flex-1 rounded-lg border border-[#bfd4c2] bg-white px-3 text-xs text-[#1f232b] outline-none focus:border-[#1f5a2f] sm:h-11 sm:rounded-xl sm:text-sm"
                   />
                   <button
                     type="button"
                     onClick={claimDownload}
                     disabled={downloadLoading}
-                    className="h-11 rounded-xl bg-[#1f5a2f] px-4 text-sm font-semibold text-white transition hover:bg-[#184928] disabled:opacity-70"
+                    className="h-10 whitespace-nowrap rounded-lg bg-[#1f5a2f] px-3 text-xs font-semibold text-white transition hover:bg-[#184928] disabled:opacity-70 sm:h-11 sm:rounded-xl sm:px-4 sm:text-sm"
                   >
                     {downloadLoading ? "Checking..." : "Get download"}
                   </button>
@@ -340,7 +370,7 @@ export default function Home() {
                 {downloadUrl ? (
                   <a
                     href={downloadUrl}
-                    className="mt-3 inline-flex text-sm font-semibold text-[#1434d6] underline"
+                    className="mt-2 inline-flex text-xs font-semibold text-[#1434d6] underline sm:mt-3 sm:text-sm"
                   >
                     Download updater ZIP
                   </a>
@@ -348,18 +378,18 @@ export default function Home() {
               </motion.div>
             ) : null}
 
-            <motion.div variants={motionItem} className="mt-10 grid gap-4 sm:grid-cols-2">
+            <motion.div variants={motionItem} className="mt-6 grid gap-3 sm:mt-10 sm:gap-4 sm:grid-cols-2">
               {packs.map((pack) => (
                 <article
                   key={pack.name}
-                  className="rounded-[1.6rem] border border-[#dadde4] bg-[#ffffff] p-5 shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
+                  className="rounded-[1.2rem] border border-[#dadde4] bg-[#ffffff] p-4 shadow-[0_10px_30px_rgba(0,0,0,0.04)] sm:rounded-[1.6rem] sm:p-5"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6f7786]">
                     {pack.subtitle}
                   </p>
-                  <h3 className="mt-2 text-2xl font-bold text-[#20242b]">{pack.name}</h3>
-                  <p className="mt-1 text-3xl font-black text-[#1434d6]">{pack.price}</p>
-                  <p className="mt-3 text-sm leading-6 text-[#20242b]">{pack.details}</p>
+                  <h3 className="mt-2 text-xl font-bold text-[#20242b] sm:text-2xl">{pack.name}</h3>
+                  <p className="mt-1 text-2xl font-black text-[#1434d6] sm:text-3xl">{pack.price}</p>
+                  <p className="mt-2 text-xs leading-5 text-[#20242b] sm:mt-3 sm:text-sm sm:leading-6">{pack.details}</p>
                 </article>
               ))}
             </motion.div>
@@ -370,15 +400,15 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.92, rotate: -2 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative w-full max-w-[676px] rounded-[2rem] border border-[#e0e0e0] bg-white p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
+              className="w-full max-w-[300px] rounded-[1.2rem] border border-[#e0e0e0] bg-white p-3 shadow-[0_10px_30px_rgba(0,0,0,0.06)] sm:max-w-[400px] sm:rounded-[1.6rem] sm:p-4 lg:max-w-[676px] lg:rounded-[2rem] lg:p-5"
             >
-              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#d0d4db] to-transparent" />
+              <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-[#d0d4db] to-transparent sm:inset-x-6 lg:inset-x-8" />
 
               <button
                 type="button"
                 onClick={() => scrollCarousel(-1)}
                 aria-label="Previous image"
-                className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-2xl font-light leading-none text-[#1434d6] shadow-[0_8px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm transition hover:bg-white"
+                className="absolute left-1.5 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-lg font-light leading-none text-[#1434d6] shadow-[0_4px_12px_rgba(0,0,0,0.08)] backdrop-blur-sm transition hover:bg-white sm:h-10 sm:w-10 sm:text-xl lg:h-11 lg:w-11"
               >
                 ‹
               </button>
@@ -387,19 +417,19 @@ export default function Home() {
                 type="button"
                 onClick={() => scrollCarousel(1)}
                 aria-label="Next image"
-                className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-2xl font-light leading-none text-[#1434d6] shadow-[0_8px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm transition hover:bg-white"
+                className="absolute right-1.5 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-lg font-light leading-none text-[#1434d6] shadow-[0_4px_12px_rgba(0,0,0,0.08)] backdrop-blur-sm transition hover:bg-white sm:h-10 sm:w-10 sm:text-xl lg:h-11 lg:w-11"
               >
                 ›
               </button>
 
               <div
                 ref={carouselRef}
-                className="mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="mt-3 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-4 sm:gap-3 sm:pb-3"
               >
                 {heroSlides.map((slide) => (
                   <figure
                     key={slide.title}
-                    className="min-w-full snap-center overflow-hidden rounded-[1.6rem] border border-[#e2e4e8] bg-[#fafafa]"
+                    className="min-w-full snap-center overflow-hidden rounded-[1rem] border border-[#e2e4e8] bg-[#fafafa] sm:rounded-[1.2rem] lg:rounded-[1.6rem]"
                   >
                     {slide.kind === "image" ? (
                       <Image
@@ -407,19 +437,19 @@ export default function Home() {
                         alt={slide.title}
                         width={1200}
                         height={1200}
-                        className="aspect-square h-auto w-full object-contain p-4"
+                        className="aspect-square h-auto w-full object-contain p-2 sm:p-3 lg:p-4"
                         priority={slide.src === "/torq/mock-logo.png"}
                       />
                     ) : (
-                      <div className="flex aspect-square w-full flex-col items-center justify-center gap-4 bg-[linear-gradient(180deg,#f9fafc_0%,#eef1f5_100%)] p-8 text-center">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#cfd5df] bg-white text-2xl text-[#1434d6]">
+                      <div className="flex aspect-square w-full flex-col items-center justify-center gap-3 bg-[linear-gradient(180deg,#f9fafc_0%,#eef1f5_100%)] p-4 text-center sm:gap-4 sm:p-6 lg:p-8">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#cfd5df] bg-white text-lg text-[#1434d6] sm:h-14 sm:w-14 sm:text-xl lg:h-16 lg:w-16 lg:text-2xl">
                           ▶
                         </div>
-                        <p className="text-sm font-semibold uppercase tracking-[0.08em] text-[#6a7382]">
+                        <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#6a7382] sm:text-sm">
                           Video placeholder
                         </p>
-                        <p className="max-w-[22rem] text-base font-medium text-[#2a2f37]">{slide.title}</p>
-                        <p className="text-sm text-[#7a8391]">Drop in your .mp4 later and this slot is ready.</p>
+                        <p className="max-w-[16rem] text-sm font-medium text-[#2a2f37] sm:text-base lg:max-w-[22rem]">{slide.title}</p>
+                        <p className="text-xs text-[#7a8391] sm:text-sm">Drop in your .mp4 later and this slot is ready.</p>
                       </div>
                     )}
                   </figure>
@@ -429,53 +459,53 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-12 pb-8 sm:pb-10 lg:pb-14">
-          <div className="rounded-[2rem] border border-[#dde2ea] bg-white p-6 shadow-[0_18px_45px_rgba(0,0,0,0.05)] sm:p-8 lg:p-10">
+        <section className="mt-8 pb-6 sm:mt-12 sm:pb-8 lg:pb-14">
+          <div className="rounded-[1.2rem] border border-[#dde2ea] bg-white p-4 shadow-[0_10px_30px_rgba(0,0,0,0.03)] sm:rounded-[1.6rem] sm:p-6 sm:shadow-[0_15px_40px_rgba(0,0,0,0.04)] lg:rounded-[2rem] lg:p-10 lg:shadow-[0_18px_45px_rgba(0,0,0,0.05)]">
             <div className="max-w-3xl">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#667086]">
                 Product details
               </p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#20242b] sm:text-4xl">
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[#20242b] sm:mt-3 sm:text-3xl lg:text-4xl">
                 Engineered for the Commander pod, without the phone-app friction
               </h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-[#434b59] sm:text-lg">
+              <p className="mt-3 max-w-2xl text-xs leading-6 text-[#434b59] sm:mt-4 sm:text-base sm:leading-7 lg:text-lg">
                 TORQ is a tabletop-first control surface for life totals, game flow, and table-side
                 utility. It is designed to feel deliberate in hand, visible from across the table,
                 and useful in real multiplayer play.
               </p>
             </div>
 
-            <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
               {featureCards.map((card) => (
                 <article
                   key={card.label}
-                  className="rounded-[1.5rem] border border-[#e2e5eb] bg-[#fbfbfc] p-5 shadow-[0_10px_28px_rgba(0,0,0,0.03)]"
+                  className="rounded-[1rem] border border-[#e2e5eb] bg-[#fbfbfc] p-3 shadow-[0_5px_15px_rgba(0,0,0,0.02)] sm:rounded-[1.5rem] sm:p-5 sm:shadow-[0_10px_28px_rgba(0,0,0,0.03)]"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7483]">
                     {card.label}
                   </p>
-                  <h3 className="mt-3 text-xl font-bold leading-snug text-[#20242b]">
+                  <h3 className="mt-2 text-base font-bold leading-snug text-[#20242b] sm:mt-3 sm:text-xl">
                     {card.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-6 text-[#4b5462]">{card.copy}</p>
+                  <p className="mt-2 text-xs leading-5 text-[#4b5462] sm:mt-3 sm:text-sm sm:leading-6">{card.copy}</p>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="pb-12 sm:pb-16 lg:pb-20" id="about-us">
-          <div className="rounded-[2rem] border border-[#dde2ea] bg-white p-6 shadow-[0_18px_45px_rgba(0,0,0,0.05)] sm:p-8 lg:p-10">
+        <section className="pb-8 sm:pb-12 lg:pb-20" id="about-us">
+          <div className="rounded-[1.2rem] border border-[#dde2ea] bg-white p-4 shadow-[0_10px_30px_rgba(0,0,0,0.03)] sm:rounded-[1.6rem] sm:p-6 sm:shadow-[0_15px_40px_rgba(0,0,0,0.04)] lg:rounded-[2rem] lg:p-10 lg:shadow-[0_18px_45px_rgba(0,0,0,0.05)]">
             <div className="max-w-3xl">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#667086]">
                 Our story
               </p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#20242b] sm:text-4xl">
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[#20242b] sm:mt-3 sm:text-3xl lg:text-4xl">
                 About Us
               </h2>
             </div>
 
-            <div className="mt-8 max-w-3xl space-y-6 text-base leading-8 text-[#434b59] sm:text-lg">
+            <div className="mt-6 max-w-3xl space-y-4 text-xs leading-6 text-[#434b59] sm:mt-8 sm:space-y-6 sm:text-base sm:leading-8 lg:text-lg">
               <p>
                 TORQ was born from a simple question: why should premium Commander software cost €78? I discovered Soul Dial and recognized its quality—but also recognized that the price tag locked out an entire community of players who deserved access to this kind of tool. Life totals are a solved problem. The interface and experience shouldn&apos;t come with a premium barrier.
               </p>
