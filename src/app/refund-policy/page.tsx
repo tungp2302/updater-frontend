@@ -52,13 +52,17 @@ export default function RefundPolicy() {
 
         {/* Content */}
         <article className="prose prose-lg max-w-3xl mx-auto mt-12 prose-headings:text-[#20242b] prose-p:text-[#434b59] prose-a:text-[#1434d6] hover:prose-a:text-[#091aa0]">
-          <h1 className="text-4xl font-extrabold tracking-tight text-[#20242b] mb-8">
-            Refund & Returns Policy
+          <h1 className="text-4xl font-extrabold tracking-tight text-[#20242b] mb-4">
+            MTG Life Counter Updater — Refund Policy
           </h1>
 
+          <p className="text-sm font-semibold text-[#a2362d] mb-6">Important: All sales of software are final.</p>
+
           <p className="text-lg leading-8 text-[#434b59] mb-8">
-            At TORQ, we stand behind our software. If you experience any issue with your purchase or
-            the software doesn&apos;t meet your expectations, we&apos;re here to help.
+            Because this product is software that can be copied and distributed electronically, we do
+            not offer refunds for change-of-mind purchases. If you experience a technical problem
+            that prevents the software from functioning as described, contact support and we will
+            work with you to provide a remedy in accordance with applicable consumer law.
           </p>
 
           <section className="mb-12">
@@ -77,18 +81,12 @@ export default function RefundPolicy() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">Change of Mind Returns</h2>
+            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">Refunds for Software</h2>
             <p>
-              We accept change of mind returns within <strong>14 days</strong> of purchase, provided:
-            </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>The software has not been extensively used or modified</li>
-              <li>You have not shared or distributed the license key</li>
-              <li>You include your original receipt or order confirmation</li>
-            </ul>
-            <p>
-              A full refund will be issued once the conditions are verified. Refunds are typically
-              processed within 5-7 business days.
+              Software purchases are non-refundable except where required by law (for example, if a
+              consumer right in your jurisdiction mandates a refund for defective digital goods).
+              Please contact <strong>support@torq-lab.com</strong> if you experience a technical
+              issue and we will evaluate the appropriate remedy.
             </p>
           </section>
 
