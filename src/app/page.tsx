@@ -317,6 +317,13 @@ export default function Home() {
               one premium handheld interface.
             </motion.p>
 
+              <motion.p
+                variants={motionItem}
+                className="mt-2 text-xs font-semibold text-[#667086] sm:mt-3 sm:text-sm"
+              >
+                🖥️ Windows • macOS support coming soon
+              </motion.p>
+
             <motion.div variants={motionItem} className="mt-6 flex flex-wrap gap-4 sm:mt-10 sm:gap-5" id="purchase">
               <button
                 type="button"
