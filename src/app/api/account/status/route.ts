@@ -92,9 +92,7 @@ function getDeviceStatus(device: DeviceRow): string {
 }
 
 function getDeviceLastSeen(device: DeviceRow): string | null {
-  return (
-    getString(device.last_seen_at) || getString(device.updated_at) || getString(device.created_at)
-  );
+  return getString(device.last_seen_at) || getString(device.updated_at) || null;
 }
 
 function getPaymentLabel(paymentStatus: string | null | undefined, createdAt: string | null | undefined): string {
@@ -155,7 +153,7 @@ export async function POST(request: Request) {
           "account_devices",
           new URLSearchParams({
             account_id: `eq.${accountId}`,
-            order: "created_at.desc",
+            order: "last_seen_at.desc",
             select: "*",
           }),
         );
