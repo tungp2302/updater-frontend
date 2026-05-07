@@ -575,13 +575,6 @@ export default function Home() {
                 />
               </div>
 
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone number"
-                className="w-full rounded-lg border border-[#d7dbe3] bg-white px-4 py-3 text-base text-[#1f232b] placeholder-[#9099a6] transition focus:border-[#1434d6] focus:outline-none focus:ring-1 focus:ring-[#1434d6]/20"
-              />
-
               <textarea
                 name="message"
                 placeholder="Comment"

@@ -4,7 +4,6 @@ export async function POST(request: NextRequest) {
   try {
     let name: FormDataEntryValue | null = null;
     let email: FormDataEntryValue | null = null;
-    let phone: FormDataEntryValue | null = null;
     let message: FormDataEntryValue | null = null;
 
     // Accept either form-data or JSON
@@ -13,13 +12,11 @@ export async function POST(request: NextRequest) {
       const body = await request.json().catch(() => ({} as any));
       name = body.name ?? null;
       email = body.email ?? null;
-      phone = body.phone ?? null;
       message = body.message ?? null;
     } else {
       const formData = await request.formData();
       name = formData.get("name");
       email = formData.get("email");
-      phone = formData.get("phone");
       message = formData.get("message");
     }
 
@@ -31,8 +28,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // For now, log the submission (in production, integrate with email service)
-    console.log("Contact form submission:", { name, email, phone, message });
+    // Log the submission
+    console.log("Contact form submission:", { name, email, message });
 
     // If RESEND_API_KEY is provided, send through Resend (no extra dependency)
     const RESEND_KEY = process.env.RESEND_API_KEY;
@@ -55,7 +52,7 @@ export async function POST(request: NextRequest) {
               <h2>New Contact Form Submission</h2>
               <p><strong>Name:</strong> ${name}</p>
               <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Phone:</strong> ${phone ?? "Not provided"}</p>
+
               <p><strong>Message:</strong></p>
               <p>${message}</p>
             `,
