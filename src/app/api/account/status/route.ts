@@ -123,7 +123,7 @@ export async function POST(request: Request) {
       new URLSearchParams({
         email_norm: `eq.${email}`,
         limit: "1",
-        select: "*",
+        select: "id,email_norm,entitlement_active,max_devices,updated_at",
       }),
     );
     const account = accountRows[0] ?? null;
