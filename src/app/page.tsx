@@ -43,7 +43,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     kind: "image",
-    src: "/torq/torq-led-warning.png",
+    src: "/torq/torq-led-warning-v2.png",
     title: "LED",
   },
   {
