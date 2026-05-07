@@ -40,7 +40,8 @@ export async function POST(request: NextRequest) {
 
     if (RESEND_KEY) {
       try {
-        const res = await fetch("https://api.resend.com/emails", {
+        // Email 1: Send submission to support team
+        const supportRes = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -61,8 +62,37 @@ export async function POST(request: NextRequest) {
           }),
         });
 
-        if (!res.ok) {
-          console.error("Resend send failed", await res.text());
+        if (!supportRes.ok) {
+          console.error("Resend send to support failed", await supportRes.text());
+        }
+
+        // Email 2: Send confirmation to the submitter
+        const confirmRes = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${RESEND_KEY}`,
+          },
+          body: JSON.stringify({
+            from: "TORQ Contact <noreply@torq-lab.com>",
+            to: email as string,
+            subject: "We received your message — TORQ",
+            html: `
+              <h2>Thank you for contacting TORQ!</h2>
+              <p>Hi ${name},</p>
+              <p>We received your message and will get back to you as soon as possible.</p>
+              <p><strong>Your message:</strong></p>
+              <p>${message}</p>
+              <hr />
+              <p style="font-size: 12px; color: #666;">
+                If you have any questions in the meantime, feel free to reply to this email or visit our site at https://torq-lab.com
+              </p>
+            `,
+          }),
+        });
+
+        if (!confirmRes.ok) {
+          console.error("Resend confirmation send failed", await confirmRes.text());
         }
       } catch (err) {
         console.error("Resend API error:", err);
