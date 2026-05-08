@@ -9,20 +9,20 @@ export default function RefundPolicy() {
   const leftNav = ["ABOUT US", "CONTACT"];
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#06090d] text-[#e6edf6]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_6%,_rgba(17,201,255,0.18),_transparent_25%),radial-gradient(circle_at_10%_25%,_rgba(36,93,206,0.18),_transparent_28%),linear-gradient(180deg,_#090f17_0%,_#05080d_100%)]" />
+    <main className="relative min-h-screen overflow-hidden bg-[#f6f6f6] text-[#1f232b]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_7%_12%,_rgba(38,70,151,0.08),_transparent_28%),radial-gradient(circle_at_100%_18%,_rgba(188,194,206,0.24),_transparent_28%),linear-gradient(180deg,_#ffffff_0%,_#f0f0f0_100%)]" />
 
       <div className="relative mx-auto flex min-h-screen max-w-[1280px] flex-col px-4 pt-4 pb-12 sm:px-6 lg:px-8">
-        <div className="rounded-none bg-[#11c9ff] px-4 py-1.5 text-center text-xs font-semibold tracking-[0.02em] text-[#06090d] sm:text-sm">
+        <div className="rounded-none bg-[#0e24d6] px-4 py-1.5 text-center text-xs font-semibold tracking-[0.02em] text-white sm:text-sm">
           Save over 40% compared to Soul Dial
         </div>
 
         {/* Header */}
-        <header className="flex items-center justify-between gap-2 bg-[#101722] border-b border-[#1e2c3d] px-3 py-3 sm:px-4 sm:py-4">
+        <header className="flex items-center justify-between gap-2 bg-white px-3 py-3 sm:px-4 sm:py-4">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 text-[#e6edf6] md:hidden"
+            className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 text-[#1f232b] md:hidden"
             aria-label="Toggle menu"
           >
             <div className="h-0.5 w-6 bg-current" />
@@ -44,12 +44,12 @@ export default function RefundPolicy() {
             </Link>
           </div>
 
-          <nav className="hidden items-center gap-6 text-xs font-medium uppercase tracking-[0.14em] text-[#11c9ff] sm:gap-8 sm:text-sm md:flex">
+          <nav className="hidden items-center gap-6 text-xs font-medium uppercase tracking-[0.14em] text-[#1434d6] sm:gap-8 sm:text-sm md:flex">
             {leftNav.map((item) => (
               <a
                 key={item}
                 href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : "#"}
-                className="transition hover:text-[#245dce]"
+                className="transition hover:text-[#091aa0]"
               >
                 {item}
               </a>
@@ -59,7 +59,7 @@ export default function RefundPolicy() {
           <div className="flex items-center gap-3 sm:gap-4">
             <Link
               href="/account"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#b9c5d8] text-[#e6edf6] transition hover:border-[#11c9ff] hover:text-[#11c9ff] sm:h-10 sm:w-10 sm:text-lg"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#1f232b] text-[#1f232b] transition hover:border-[#1434d6] hover:text-[#1434d6] sm:h-10 sm:w-10 sm:text-lg"
               aria-label="Open account dashboard"
             >
               <span className="text-sm leading-none sm:text-lg">⌂</span>
@@ -68,14 +68,14 @@ export default function RefundPolicy() {
         </header>
 
         {/* Content */}
-        <article className="prose prose-lg max-w-3xl mx-auto mt-12 prose-headings:text-[#11c9ff] prose-p:text-[#b9c5d8] prose-a:text-[#11c9ff] hover:prose-a:text-[#245dce]">
-          <h1 className="text-4xl font-extrabold tracking-tight text-[#e6edf6] mb-4">
+        <article className="prose prose-lg max-w-3xl mx-auto mt-12 prose-headings:text-[#20242b] prose-p:text-[#434b59] prose-a:text-[#1434d6] hover:prose-a:text-[#091aa0]">
+          <h1 className="text-4xl font-extrabold tracking-tight text-[#20242b] mb-4">
             MTG Life Counter Updater — Refund Policy
           </h1>
 
-          <p className="text-sm font-semibold text-[#ff6b6b] mb-6">Important: All sales of software are final.</p>
+          <p className="text-sm font-semibold text-[#a2362d] mb-6">Important: All sales of software are final.</p>
 
-          <p className="text-lg leading-8 text-[#b9c5d8] mb-8">
+          <p className="text-lg leading-8 text-[#434b59] mb-8">
             Because this product is software that can be copied and distributed electronically, we do
             not offer refunds for change-of-mind purchases. If you experience a technical problem
             that prevents the software from functioning as described, contact support and we will
@@ -83,7 +83,7 @@ export default function RefundPolicy() {
           </p>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#11c9ff] mt-8 mb-4">Contact Us First</h2>
+            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">Contact Us First</h2>
             <p>
               Before requesting a refund, please reach out to us so we can understand the issue and
               explore solutions together.
@@ -98,7 +98,7 @@ export default function RefundPolicy() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#11c9ff] mt-8 mb-4">Refunds for Software</h2>
+            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">Refunds for Software</h2>
             <p>
               Software purchases are non-refundable except where required by law (for example, if a
               consumer right in your jurisdiction mandates a refund for defective digital goods).
@@ -108,7 +108,7 @@ export default function RefundPolicy() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#11c9ff] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">
               Technical Issues or Software Problems
             </h2>
             <p>
@@ -129,7 +129,7 @@ export default function RefundPolicy() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#11c9ff] mt-8 mb-4">Refund Processing</h2>
+            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">Refund Processing</h2>
             <p>
               Once an approved refund has been authorized, we will process it back to your original
               payment method. Refund processing times vary depending on your payment provider and
@@ -142,7 +142,7 @@ export default function RefundPolicy() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#11c9ff] mt-8 mb-4">Product Exclusions</h2>
+            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">Product Exclusions</h2>
             <p>
               This policy does not cover issues arising from:
             </p>
@@ -161,7 +161,7 @@ export default function RefundPolicy() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#11c9ff] mt-8 mb-4">License Transfers</h2>
+            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">License Transfers</h2>
             <p>
               TORQ licenses are issued to a single user or device. Once activated, licenses cannot
               be transferred to a different user or device. If you wish to discontinue use on one
@@ -170,7 +170,7 @@ export default function RefundPolicy() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#11c9ff] mt-8 mb-4">Questions</h2>
+            <h2 className="text-2xl font-bold text-[#20242b] mt-8 mb-4">Questions</h2>
             <p>
               If you have any questions about your order, software issues, troubleshooting, or
               refund requests, please reach out before taking further action.
@@ -180,22 +180,22 @@ export default function RefundPolicy() {
             </p>
           </section>
 
-          <section className="border-t border-[#1e2c3d] pt-8 mt-12">
+          <section className="border-t border-[#dde2ea] pt-8 mt-12">
             <div className="flex gap-6 flex-wrap justify-center text-sm mb-6">
-              <Link href="/" className="text-[#11c9ff] hover:text-[#245dce]">
+              <Link href="/" className="text-[#1434d6] hover:text-[#091aa0]">
                 Home
               </Link>
-              <Link href="/imprint" className="text-[#11c9ff] hover:text-[#245dce]">
+              <Link href="/imprint" className="text-[#1434d6] hover:text-[#091aa0]">
                 Imprint
               </Link>
-              <a href="mailto:support@torq-lab.com" className="text-[#11c9ff] hover:text-[#245dce]">
+              <a href="mailto:support@torq-lab.com" className="text-[#1434d6] hover:text-[#091aa0]">
                 Contact
               </a>
               <a
                 href="https://www.instagram.com/torqlab.mtg/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#11c9ff] hover:text-[#245dce]"
+                className="text-[#1434d6] hover:text-[#091aa0]"
               >
                 Instagram
               </a>
