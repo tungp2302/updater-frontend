@@ -160,6 +160,12 @@ export default function Home() {
   const [checkoutState, setCheckoutState] = useState<string | null>(null);
   const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contactName, setContactName] = useState("");
+  const [contactEmailField, setContactEmailField] = useState("");
+  const [contactMessageField, setContactMessageField] = useState("");
+  const [contactLoading, setContactLoading] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState<boolean | null>(null);
+  const [contactError, setContactError] = useState<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -687,8 +693,40 @@ export default function Home() {
             </div>
 
             <form
-              action="/api/contact"
-              method="POST"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setContactLoading(true);
+                setContactError(null);
+                setContactSuccess(null);
+
+                try {
+                  const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      name: contactName,
+                      email: contactEmailField,
+                      message: contactMessageField,
+                    }),
+                  });
+
+                  const payload = await res.json().catch(() => ({} as any));
+
+                  if (!res.ok) {
+                    throw new Error(payload?.error || "Submission failed");
+                  }
+
+                  setContactSuccess(true);
+                  setContactName("");
+                  setContactEmailField("");
+                  setContactMessageField("");
+                } catch (err: any) {
+                  setContactError(err?.message ?? "Submission failed");
+                  setContactSuccess(false);
+                } finally {
+                  setContactLoading(false);
+                }
+              }}
               className="space-y-5"
             >
               <div className="grid gap-5 sm:grid-cols-2">
@@ -697,6 +735,8 @@ export default function Home() {
                   name="name"
                   placeholder="Name"
                   required
+                  value={contactName}
+                  onChange={(e) => setContactName(e.target.value)}
                   className="rounded-lg border border-[#d7dbe3] bg-white px-4 py-3 text-base text-[#1f232b] placeholder-[#9099a6] transition focus:border-[#1434d6] focus:outline-none focus:ring-1 focus:ring-[#1434d6]/20"
                 />
                 <input
@@ -704,6 +744,8 @@ export default function Home() {
                   name="email"
                   placeholder="Email"
                   required
+                  value={contactEmailField}
+                  onChange={(e) => setContactEmailField(e.target.value)}
                   className="rounded-lg border border-[#d7dbe3] bg-white px-4 py-3 text-base text-[#1f232b] placeholder-[#9099a6] transition focus:border-[#1434d6] focus:outline-none focus:ring-1 focus:ring-[#1434d6]/20"
                 />
               </div>
@@ -713,14 +755,25 @@ export default function Home() {
                 placeholder="Comment"
                 rows={6}
                 required
+                value={contactMessageField}
+                onChange={(e) => setContactMessageField(e.target.value)}
                 className="w-full rounded-lg border border-[#d7dbe3] bg-white px-4 py-3 text-base text-[#1f232b] placeholder-[#9099a6] transition focus:border-[#1434d6] focus:outline-none focus:ring-1 focus:ring-[#1434d6]/20"
               />
 
+              {contactSuccess ? (
+                <div className="rounded-md bg-[#f0f9f6] border border-[#cfeadb] p-3 text-sm text-[#0f5a2f]">Thanks — your message was sent.</div>
+              ) : null}
+
+              {contactError ? (
+                <div className="rounded-md bg-[#fff6f6] border border-[#f3c2c2] p-3 text-sm text-[#a2362d]">{contactError}</div>
+              ) : null}
+
               <button
                 type="submit"
-                className="w-full rounded-lg bg-[#1434d6] px-6 py-3 text-lg font-bold uppercase tracking-[0.04em] text-white shadow-[0_14px_30px_rgba(20,52,214,0.25)] transition hover:bg-[#0f2cbd]"
+                disabled={contactLoading}
+                className="w-full rounded-lg bg-[#1434d6] px-6 py-3 text-lg font-bold uppercase tracking-[0.04em] text-white shadow-[0_14px_30px_rgba(20,52,214,0.25)] transition hover:bg-[#0f2cbd] disabled:opacity-60"
               >
-                Send
+                {contactLoading ? "Sending..." : "Send"}
               </button>
             </form>
           </div>
