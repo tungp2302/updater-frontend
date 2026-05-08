@@ -487,7 +487,7 @@ export default function Home() {
                 type="button"
                 onClick={() => scrollCarousel(-1)}
                 aria-label="Previous image"
-                className="absolute left-1.5 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-lg font-light leading-none text-[#1434d6] shadow-[0_4px_12px_rgba(0,0,0,0.08)] backdrop-blur-sm transition hover:bg-white sm:h-10 sm:w-10 sm:text-xl lg:h-11 lg:w-11"
+                className="absolute left-1.5 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-lg font-light leading-none text-[#1434d6] shadow-[0_4px_12px_rgba(0,0,0,0.08)] backdrop-blur-sm transition hover:border-[#1434d6] hover:bg-white sm:h-10 sm:w-10 sm:text-xl lg:h-11 lg:w-11"
               >
                 ‹
               </button>
@@ -496,7 +496,7 @@ export default function Home() {
                 type="button"
                 onClick={() => scrollCarousel(1)}
                 aria-label="Next image"
-                className="absolute right-1.5 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-lg font-light leading-none text-[#1434d6] shadow-[0_4px_12px_rgba(0,0,0,0.08)] backdrop-blur-sm transition hover:bg-white sm:h-10 sm:w-10 sm:text-xl lg:h-11 lg:w-11"
+                className="absolute right-1.5 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-lg font-light leading-none text-[#1434d6] shadow-[0_4px_12px_rgba(0,0,0,0.08)] backdrop-blur-sm transition hover:border-[#1434d6] hover:bg-white sm:h-10 sm:w-10 sm:text-xl lg:h-11 lg:w-11"
               >
                 ›
               </button>
@@ -608,7 +608,7 @@ export default function Home() {
 
               <div
                 ref={hardwareStripRef}
-                className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
+                className="flex snap-x snap-mandatory gap-4 overflow-x-hidden touch-pan-y scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:overflow-x-auto sm:touch-auto sm:gap-5"
               >
                 {hardwareTargets.map((target, index) => (
                   <a
@@ -616,7 +616,7 @@ export default function Home() {
                     href={target.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group min-w-[280px] snap-center rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_5px_15px_rgba(0,0,0,0.02)] transition hover:shadow-[0_12px_30px_rgba(20,52,214,0.15)] hover:border-[#1434d6] sm:min-w-[320px] sm:rounded-[1.6rem] sm:p-6 lg:min-w-[340px]"
+                    className="group min-w-[280px] snap-center rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_5px_15px_rgba(0,0,0,0.02)] transition hover:border-[#1434d6] hover:shadow-[0_12px_30px_rgba(20,52,214,0.15)] sm:min-w-[320px] sm:rounded-[1.6rem] sm:p-6 lg:min-w-[340px]"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div>
@@ -630,7 +630,7 @@ export default function Home() {
                           {target.note}
                         </p>
                       </div>
-                      <span className="text-2xl group-hover:translate-x-1 transition">→</span>
+                      <span className="text-2xl transition group-hover:translate-x-1">→</span>
                     </div>
                     <p className="mt-4 text-sm font-semibold text-[#1434d6]">Open target {index + 1} →</p>
                   </a>
