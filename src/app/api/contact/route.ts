@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
     // If RESEND_API_KEY is provided, send through Resend (no extra dependency)
     const RESEND_KEY = process.env.RESEND_API_KEY;
     const dest = process.env.CONTACT_DESTINATION_EMAIL || "support@torq-lab.com";
+    const resendFrom = process.env.RESEND_FROM || "TORQ Contact <noreply@torq-lab.com>";
 
     if (RESEND_KEY) {
       try {
@@ -44,8 +45,8 @@ export async function POST(request: NextRequest) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${RESEND_KEY}`,
           },
-          body: JSON.stringify({
-            from: "TORQ Contact <onboarding@resend.dev>",
+            body: JSON.stringify({
+            from: resendFrom,
             to: dest,
             subject: `New contact form submission from ${name ?? "Anonymous"}`,
             html: `
@@ -70,8 +71,8 @@ export async function POST(request: NextRequest) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${RESEND_KEY}`,
           },
-          body: JSON.stringify({
-            from: "TORQ Contact <onboarding@resend.dev>",
+            body: JSON.stringify({
+            from: resendFrom,
             to: email as string,
             subject: "We received your message — TORQ",
             html: `
