@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Imprint() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const leftNav = ["ABOUT US", "CONTACT"];
+  const leftNav = ["ABOUT US", "GUIDE", "CONTACT"];
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f6f6f6] text-[#1f232b]">
@@ -48,7 +48,7 @@ export default function Imprint() {
             {leftNav.map((item) => (
               <a
                 key={item}
-                href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : "#"}
+                href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : item === "GUIDE" ? "/guide" : "#"}
                 className="transition hover:text-[#091aa0]"
               >
                 {item}
@@ -74,7 +74,7 @@ export default function Imprint() {
               {leftNav.map((item) => (
                 <a
                   key={item}
-                  href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : "#"}
+                  href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : item === "GUIDE" ? "/guide" : "#"}
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-sm font-medium uppercase tracking-[0.12em] text-[#1434d6] transition hover:text-[#091aa0]"
                 >
@@ -208,6 +208,9 @@ export default function Imprint() {
             </Link>
             <Link href="/refund-policy" className="text-[#1434d6] hover:text-[#091aa0]">
               Refund Policy
+            </Link>
+            <Link href="/guide" className="text-[#1434d6] hover:text-[#091aa0]">
+              Guide
             </Link>
             <a href="mailto:support@torq-lab.com" className="text-[#1434d6] hover:text-[#091aa0]">
               Contact

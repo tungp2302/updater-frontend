@@ -56,7 +56,7 @@ const heroSlides: HeroSlide[] = [
   },
 ];
 
-const leftNav = ["ABOUT US", "CONTACT"];
+const leftNav = ["ABOUT US", "GUIDE", "CONTACT"];
 const rightNav: string[] = [];
 
 const featureCards = [
@@ -317,7 +317,7 @@ export default function Home() {
             {leftNav.map((item) => (
               <a
                 key={item}
-                href={item === "CONTACT" ? "#contact-form" : item === "ABOUT US" ? "#about-us" : "#"}
+                href={item === "CONTACT" ? "#contact-form" : item === "ABOUT US" ? "#about-us" : item === "GUIDE" ? "/guide" : "#"}
                 className="transition hover:text-[#091aa0]"
               >
                 {item}
@@ -350,7 +350,7 @@ export default function Home() {
               {leftNav.map((item) => (
                 <a
                   key={item}
-                  href={item === "CONTACT" ? "#contact-form" : item === "ABOUT US" ? "#about-us" : "#"}
+                  href={item === "CONTACT" ? "#contact-form" : item === "ABOUT US" ? "#about-us" : item === "GUIDE" ? "/guide" : "#"}
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-sm font-medium uppercase tracking-[0.12em] text-[#1434d6] transition hover:text-[#091aa0]"
                 >
@@ -788,6 +788,9 @@ export default function Home() {
               </a>
               <a href="/refund-policy" className="text-[#1434d6] hover:text-[#091aa0] transition">
                 Refund Policy
+              </a>
+              <a href="/guide" className="text-[#1434d6] hover:text-[#091aa0] transition">
+                Guide
               </a>
               <a href="mailto:support@torq-lab.com" className="text-[#1434d6] hover:text-[#091aa0] transition">
                 Contact

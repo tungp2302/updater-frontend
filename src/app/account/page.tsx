@@ -38,7 +38,7 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<AccountStatus | null>(null);
-  const leftNav = ["ABOUT US", "CONTACT"];
+  const leftNav = ["ABOUT US", "GUIDE", "CONTACT"];
 
   const lookupStatus = async () => {
     setLoading(true);
@@ -107,7 +107,7 @@ export default function AccountPage() {
             {leftNav.map((item) => (
               <a
                 key={item}
-                href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : "#"}
+                href={item === "CONTACT" ? "/#contact-form" : item === "ABOUT US" ? "/#about-us" : item === "GUIDE" ? "/guide" : "#"}
                 className="transition hover:text-[#091aa0]"
               >
                 {item}
