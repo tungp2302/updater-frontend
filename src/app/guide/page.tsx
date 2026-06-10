@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -42,7 +42,94 @@ const troubleshootingItems = [
   "Close the flash tool before running the updater if only one app can access the COM port.",
   "Reconnect the device after driver installation so Windows refreshes the COM port.",
   "Run the tools as administrator if Windows blocks driver or serial access.",
+  "Restart your PC after installing the ESP-IDF drivers, then reopen the flash tool.",
+  "Start the flash tool first, then unplug and replug the USB-C cable into the device — repeat a few times until the port appears.",
+  'Open Device Manager and expand the "Connections (COM & LPT)" section — you should see "Serial USB-Device (COM*)" listed there once the device is recognised.',
 ];
+
+function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
+  const [index, setIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  function prev() {
+    setIndex((i) => (i - 1 + images.length) % images.length);
+  }
+  function next() {
+    setIndex((i) => (i + 1) % images.length);
+  }
+
+  function onTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (dx < -40) next();
+    else if (dx > 40) prev();
+    touchStartX.current = null;
+  }
+
+  return (
+    <div className="mt-5 select-none">
+      <div
+        className="relative overflow-hidden rounded-xl border border-[#dde2ea] bg-[#f0f2f7]"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <div className="relative aspect-[16/10] w-full">
+          <Image
+            src={images[index]}
+            alt={`${alt} ${index + 1}`}
+            fill
+            className="object-contain p-2"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={prev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 shadow transition hover:bg-white"
+              aria-label="Previous screenshot"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M10 13L5 8l5-5" stroke="#1f232b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 shadow transition hover:bg-white"
+              aria-label="Next screenshot"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M6 3l5 5-5 5" stroke="#1f232b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </>
+        )}
+      </div>
+
+      {images.length > 1 && (
+        <div className="mt-2.5 flex justify-center gap-1.5">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIndex(i)}
+              className={`h-1.5 rounded-full transition-all ${
+                i === index ? "w-5 bg-[#1434d6]" : "w-1.5 bg-[#c5cad5]"
+              }`}
+              aria-label={`Go to screenshot ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Guide() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -221,6 +308,18 @@ export default function Guide() {
                 After installation, unplug the device, plug it back in, then reopen the flash tool
                 and check the COM port list again.
               </p>
+              <ImageCarousel
+                images={[
+                  "/guide_sc/esp1.png",
+                  "/guide_sc/esp2.png",
+                  "/guide_sc/esp3.png",
+                  "/guide_sc/esp4.png",
+                  "/guide_sc/esp5.png",
+                  "/guide_sc/esp6.png",
+                  "/guide_sc/esp7.png",
+                ]}
+                alt="ESP driver installation step"
+              />
             </div>
 
             <div className="rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_15px_40px_rgba(0,0,0,0.04)] sm:p-7">
@@ -238,7 +337,64 @@ export default function Guide() {
               <p className="mt-4 text-sm leading-7 text-[#434b59] sm:text-base sm:leading-8">
                 Do not unplug the device while erase or install operations are running.
               </p>
+              <ImageCarousel
+                images={[
+                  "/guide_sc/flash1.png",
+                  "/guide_sc/flash2.png",
+                  "/guide_sc/flash3.png",
+                ]}
+                alt="Flash tool step"
+              />
             </div>
+          </section>
+
+          <section className="mt-10 rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_15px_40px_rgba(0,0,0,0.04)] sm:mt-12 sm:p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#667086]">
+              Updater usage
+            </p>
+            <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[#20242b]">
+              Using the TORQ updater
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#434b59] sm:text-base sm:leading-8">
+              Open the TORQ updater after the flash tool has finished erasing the factory software.
+              The updater works in three steps:
+            </p>
+            <ol className="mt-4 space-y-3 text-sm leading-7 text-[#434b59] sm:text-base sm:leading-8">
+              <li className="flex gap-3">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1434d6] text-xs font-bold text-white">1</span>
+                <span>
+                  <strong>Enter your purchasing email.</strong> This is the email address used at
+                  checkout. You can look it up any time on the{" "}
+                  <Link href="/account" className="text-[#1434d6] underline hover:text-[#091aa0]">
+                    license dashboard page
+                  </Link>
+                  .
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1434d6] text-xs font-bold text-white">2</span>
+                <span>
+                  <strong>Select the COM port.</strong> Choose the port the device is connected to
+                  from the dropdown — this is the same port shown in the flash tool.
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1434d6] text-xs font-bold text-white">3</span>
+                <span>
+                  <strong>Click Update Firmware.</strong> The updater downloads and flashes the
+                  latest TORQ release. Keep the device connected until the progress bar completes
+                  and a success message appears.
+                </span>
+              </li>
+            </ol>
+            <ImageCarousel
+              images={[
+                "/guide_sc/updater1.png",
+                "/guide_sc/updater2.png",
+                "/guide_sc/updater3.png",
+              ]}
+              alt="TORQ updater step"
+            />
           </section>
 
           <section className="mt-10 rounded-[1.2rem] border border-[#dde2ea] bg-white p-5 shadow-[0_15px_40px_rgba(0,0,0,0.04)] sm:mt-12 sm:p-7">
